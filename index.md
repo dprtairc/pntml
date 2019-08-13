@@ -3,9 +3,9 @@
 
 ### 3D Map API
 
-[Details](hhttps://dprtairc.github.io/pntml/pcm-api.html)
+[Details](https://dprtairc.github.io/pntml/pcm-api.html)
 
 ### Moving Features API
 
-[Details](hhttps://dprtairc.github.io/pntml/mf-api.html)
+[Details](https://dprtairc.github.io/pntml/mf-api.html)
 
