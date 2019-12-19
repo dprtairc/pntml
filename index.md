@@ -1,5 +1,8 @@
 ## PntML API Introduction
 
+### PntML Common API
+
+[Details](https://dprtairc.github.io/pntml/pntml-api.html)
 
 ### 3D Map API
 
