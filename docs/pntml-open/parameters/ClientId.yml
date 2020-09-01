@@ -1,0 +1,6 @@
+name: clientId
+in: path
+required: true
+description: the OAuth Application Client Id given by a user, being unique.
+schema:
+  type: string

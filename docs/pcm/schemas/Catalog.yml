@@ -1,0 +1,48 @@
+type: object
+required:
+  - id
+  - links
+additionalProperties: true
+properties:
+  id:
+    description: identifier of the collection used, for example, in URIs
+    type: string
+  title:
+    description: human readable title of the collection
+    type: string
+    example: address
+  description:
+    description: a description of the features in the collection
+    type: string
+    example: An address.
+  links:
+    type: array
+    items:
+      $ref: Link.yml
+  extent:
+    $ref: Extent.yml
+  itemType:
+    description: indicator about the type of the items in the collection (the default value is 'feature').
+    type: string
+    default: feature
+example:
+  id: Miraikan
+  itemType: feature
+  extent:
+    spatial:
+      bbox:
+        - - -180
+          - -90
+          - 180
+          - 90
+      crs:
+        - 'http://www.opengis.net/def/crs/OGC/1.3/CRS84'
+    temporal:
+      interval:
+        - - '2011-11-11T12:22:11Z'
+          - '2012-11-24T12:32:43Z'
+      trs:
+        - 'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'
+  links:
+    - href: 'https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan'
+      rel: 'self'

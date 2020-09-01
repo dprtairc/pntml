@@ -1,0 +1,47 @@
+type: object
+description: The filtering spatial, temporal, and thematic conditions to select data.
+properties:
+  bbox:
+    $ref: BoundingBox.yml
+  time:
+    $ref: LifeSpan.yml
+  intensity:
+    type: array
+    description: >
+      [A le intensity le B]: A search range of measures of the return strength of the laser pulse that generated the point.
+    minItems: 1
+    maxItems: 2
+    items:
+      type: number
+  red:
+    type: array
+    description: >
+      [A le red le B]: A search range of red color.
+    minItems: 1
+    maxItems: 2
+    items:
+      type: number
+  green:
+    type: array
+    description: >
+      [A le green le B]: A search range of green color.
+    minItems: 1
+    maxItems: 2
+    items:
+      type: number
+  blue:
+    type: array
+    description: >
+      [A le blue le B]: A search range of blue color.
+    minItems: 1
+    maxItems: 2
+    items:
+      type: number
+  tags:
+    type: array
+    description: >
+      Datasets include (contain) one of search tags.
+    items:
+      type: string
+    example:
+      - "お台場"

@@ -1,0 +1,6 @@
+name: client_id
+in: query
+required: true
+description: OAuth Application Client Id, being unique.
+schema:
+  type: string

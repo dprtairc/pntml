@@ -1,0 +1,7 @@
+description: List of User Account ID
+type: array
+items:
+  type: string
+example:
+  - User001
+  - User002

@@ -1,0 +1,27 @@
+type: object
+description: Permission information 
+properties:
+  enabledReadUsers:
+    type: array
+    description: "List of User ID who have read permission."
+    items:
+      type: string
+      example: [ User001, User002 ]
+  enabledWriteUsers:
+    type: array
+    description: "List of User ID who have write permission."
+    items:
+      type: string
+      example: [ User003, User004 ]
+  disabledReadUsers:
+    type: array
+    description: "List of User ID who don't have read permission."
+    items:
+      type: string
+      example: [ Member001, Member002 ]
+  disabledWriteUsers:
+    type: array
+    description: "List of User ID who don't have write permission."
+    items:
+      type: string
+      example: [ Member003, Member004 ]

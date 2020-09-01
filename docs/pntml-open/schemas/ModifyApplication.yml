@@ -1,0 +1,25 @@
+type: object
+description: Modify OAuth Application Information 
+required:
+  - applicationName
+  - redirectUrl
+  - homepageUrl
+  - description
+properties:
+  applicationName: 
+    type: string
+    description: "OAuth Application Name"
+    example: Test Application
+  redirectUrl:
+    type: string
+    description: "Redirect URL (OAuth Callback URL) for OAuth Application. URL to return the authentication code."
+    example: http://localhost:11111/top
+  homepageUrl: 
+    type: string
+    description: "Homepage URL (Ajax Callback URL) for OAuth Application"
+    example: http://localhost:11111/index
+  description: 
+    type: string
+    description: "Description for OAuth Application"
+    example: Modify Description
+

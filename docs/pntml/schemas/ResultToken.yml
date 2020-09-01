@@ -1,0 +1,29 @@
+type: object
+description: access token result
+required:
+  - access_token
+  - token_type
+  - refresh_token
+  - expires_in
+  - scope
+properties:
+  access_token:
+    type: string
+    description: "Access Token for OAuth Application"
+    example: 9f42c640-3eed-4039-a776-700d2c6a054d
+  token_type:
+    type: string
+    description: "Token Type for OAuth Application"
+    example: bearer
+  refresh_token:
+    type: string
+    description: "Refresh Token for OAuth Application"
+    example: ca2b2896-a6b6-4eeb-839e-b13a939027cb
+  expires_in:
+    type: string
+    description: "Expire Time (sec) for OAuth Application"
+    example: 119
+  scope: 
+    type: string
+    description: "Scope(Read, Write etc) for OAuth Application"
+    example: read

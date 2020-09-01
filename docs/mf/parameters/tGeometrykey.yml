@@ -1,0 +1,6 @@
+name: tGeometrykey
+in: path
+description: "the tGeometrykey of feature data"
+required: true
+schema:
+  type: string

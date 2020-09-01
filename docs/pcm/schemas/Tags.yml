@@ -1,0 +1,7 @@
+description: Any keywords.
+type: array
+items:
+  type: string
+example:
+  - お台場
+  - LBJ2019

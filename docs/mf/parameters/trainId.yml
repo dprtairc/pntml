@@ -1,0 +1,7 @@
+name: trainId
+in: path
+description: "The train Id"
+required: true
+schema:
+  type: string
+  format: TXXXXXXXXX

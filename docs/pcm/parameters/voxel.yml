@@ -1,0 +1,14 @@
+name: voxel
+in: query
+description: |
+  The voxel parameter determines the size of sampling points.
+  The unit is cm.
+  * Minimum = 5
+  * Maximum = 1000
+schema:
+  type: integer
+  minimum: 5
+  maximum: 1000
+  default: 20
+style: form
+explode: false

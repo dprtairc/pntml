@@ -1,0 +1,78 @@
+type: object
+description: This is the description of a stay process as a asynchroized process 
+required:
+  - inputs
+  - within
+properties:
+  inputs:
+    type: array
+    description: >
+      a list of target collection names for processing. 
+      Because of the server performance, the maximum size of collections is 10.
+    items:
+      type: string
+    minItems: 1
+    maxItems: 10
+  within:
+    type: object
+    properties:
+      type: 
+        type: string
+        enum: 
+          - FeatureCollection
+      aggregate:
+        type: string
+        enum:
+          - SUM
+          - AVG
+          - MIN
+          - MAX
+      period: 
+        type: int
+      time:
+        $ref: LifeSpan.yml
+      features:
+        type: array
+        minItems: 1
+        items:
+          $ref: 'https://geojson.org/schema/Feature.json#'
+example:
+  inputs:
+    - Miraikan1
+    - Miraikan2
+  within:
+    type: FeatureCollection
+    aggregate: AVG
+    period: 10
+    time:
+      - 2011-11-11T12:22:11Z
+      - 2012-11-24T12:32:43Z
+    features:
+      - type: Feature
+        geometry:
+          type: Polygon
+          coordinates:
+            - - 11.0
+              - 2.0
+            - - 12.0
+              - 3.0
+            - - 10.0
+              - 3.0
+        properties:
+          name: idx1
+          col: 1
+          row: 0
+      - type: Feature
+        geometry:
+          type: Polygon
+          coordinates:
+            - - 11.0
+              - 2.0
+            - - 12.0
+              - 3.0
+            - - 10.0
+              - 3.0
+          properties:
+            name: idx2
+            col: 1
+            row: 1

@@ -1,0 +1,44 @@
+type: object
+description: This is catalog about a Point Cloud Map for the registration
+required:
+  - title
+  - inputType
+properties:
+  title:
+    type: string
+    description: >
+      A name given by a user to logically manage a dataset.
+      The user can access his/her a dataset of point clouds via this title.
+      The available character is "A-Z","a-z","0-9","-","_".
+      It can't be used a name that has already been registered.
+    example: Miraikan
+  inputType:
+    type: string
+    description: Uploading file format.
+    enum:
+      - las
+      - csv
+      - pcd
+      - ply
+  transformCRS:
+    description: >
+      It denote a Cartesian coordinate reference systems for the transformation.
+      It is used to transform a Cartesian coordinate system into a WGS84 global geospatial map.
+      If you set the "transform" parameter, you must also set this.
+    type: string
+    example: http://www.opengis.net/def/crs/EPSG/0/3095
+  transform:
+    $ref: Transform.yml
+  gpsTime:
+    description: >
+      This timestamp is used for a point cloud which has no explicit GPS timestamp 
+      of the data creation/acquisition.
+    type: string
+    format: date-time
+    example: '2017-08-17T08:05:32Z'
+  tags:
+    $ref: Tags.yml
+  description:
+    type: string
+    description: Any description.
+    example: test point cloud map

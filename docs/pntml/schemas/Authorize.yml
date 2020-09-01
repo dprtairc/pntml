@@ -1,0 +1,19 @@
+type: object
+description: authorize information
+required:
+  - user_oauth_approval
+  - scope.read
+  - scope.write
+properties:
+  user_oauth_approval:
+    type: string
+    description: "Approval for OAuth Client Application"
+    example: true
+  scope.read: 
+    type: string
+    description: "Scope(Read) for OAuth Client Application"
+    example: false
+  scope.write: 
+    type: string
+    description: "Scope(Write) for OAuth Client Application"
+    example: true

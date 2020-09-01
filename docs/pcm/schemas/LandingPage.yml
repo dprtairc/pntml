@@ -1,0 +1,14 @@
+type: object
+required:
+  - links
+properties:
+  title:
+    type: string
+    example: Next Generation 3DMap Platform
+  description:
+    type: string
+    example: Access to resource via a Web API that conforms to the OpenAPI specification.
+  links:
+    type: array
+    items:
+      $ref: Link.yml

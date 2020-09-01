@@ -1,0 +1,6 @@
+name: tPropertyKey
+in: path
+description: "the tPropertyKey of feature data"
+required: true
+schema:
+  type: string

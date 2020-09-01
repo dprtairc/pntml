@@ -1,0 +1,778 @@
+openapi: 3.0.0
+info:
+  title: PnTML Moving Features API
+  description: >-
+    This is the OpenAPI definition of Moving Features API specification that conforms to the OGC Moving Features Encoding Extension - JSON.
+    xxxxx.
+  version: 1.0.0
+  contact:
+    name: ARIC Data Platform Research Team
+    url: https://www.airc.aist.go.jp/en/dprt/
+  license:
+    name: Apache License 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://dps.aaic.hpcc.jp
+    description: Development server
+    variables:
+      port:
+        enum:
+          - xxxx
+        default: xxxx
+  - url: https://dps.aaic.hpcc.jp
+    description: Test server
+    variables:
+      port:
+        default: xxxx
+tags:
+  - name: MovingFeatureCollections
+    description: Collections of moving features to be logically managed by a user.
+  - name: MovingFeatures
+    description: Moving feature data, including the temporal geometry, temporal properties, etc.
+  - name: TemporalGeometries
+    description: The spatial change over time (temporal geometry), representing the movement of the rigid or nonrigid body of a feature.
+  - name: TemporalProperties
+    description: The thematic change over time (temporal property), representing the variation of the value of any descriptive characteristic of a feature.
+  - name: Processes
+    description: Asynchronized Operations. (e.g., aggregation, learning)
+  - name: Jobs
+    description: Status of Operations.
+paths:
+  /collections:
+    post:
+      summary: Registers metadata about a collection of moving features
+      description: >-
+        A user SHOULD register metadata about a collection of moving features into the system.
+        This method is mandatory to be implemented.
+      operationId: registerMetadata
+      tags:
+        - MovingFeatureCollections
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/MFCDescription.yml
+      responses:
+        201:
+          description: >- 
+            Successful Create a collection to manage moving features. 
+            You can insert moving features by using URL.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/mf/collections/Miraikan
+                    rel: self
+                    title: Miraikan
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Retrieves catalogs of moving features collection
+      description: >-
+        A user can retrieve catalogs to access collections by simple filtering and a limit.
+        This method is mandatory to be implemented.
+      operationId: searchCatalog
+      tags:
+        - MovingFeatureCollections
+      parameters:
+        - $ref: parameters/timeOption.yml
+        - $ref: parameters/bboxOption.yml
+        - $ref: parameters/tagOption.yml
+      responses:
+        200:
+          description: A list of catalogs about collections of moving features.(100 elements per return)
+          content:
+            application/json:
+              schema:
+                $ref: schemas/CatalogCollection.yml
+              example:
+                $ref: examples/catalogCollection.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}:
+    delete:
+      summary: Deletes the {title} collection including metadata and moving features
+      description: >-
+        Only an authorized user can delete a collection.
+        The collection catalog should be deleted.
+        Before finishing the job, a user cannot use the same title to create a collection.
+        This method is optional to be implemented. 
+      operationId: deleteCollection
+      tags:
+        - MovingFeatures
+      parameters:
+        - $ref: parameters/title.yml
+      responses:
+        204:
+          description: Successfully deleted.
+        404:
+          description: A collection with the specified name was not found.
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses metadata about the collection with the specified name
+      description: >-
+        A user can access metadata that the user defined for the registration.
+        This method is mandatory to be implemented.
+      operationId: accessMetadata
+      tags:
+        - MovingFeatures
+      parameters:
+        - $ref: parameters/title.yml
+      responses:
+        200:
+          description: The metadata being returned.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/MFCDescription.yml
+        404:
+          description: A collection with the specified name was not found.
+    post:
+      summary: Inserts moving features into the collection whose name is {title}
+      description: >-
+        A user inserts a set of moving features or a moving feature into a specific collection.
+        This method is mandatory to be implemented.
+      operationId: insertFeatures
+      tags:
+        - MovingFeatures
+      parameters:
+        - $ref: parameters/title.yml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: 'schemas/MF-JSON_Trajectory.schema.json#/definitions/feature'
+                - $ref: 'schemas/MF-JSON_Trajectory.schema.json#/definitions/featureCollection'
+                - $ref: 'schemas/MF-JSON_Prism.schema.json#/definitions/movingFeature'
+                - $ref: 'schemas/MF-JSON_Prism.schema.json#/definitions/movingFeatureCollection'
+            example:
+              $ref: examples/feature.yml
+      responses:
+        200:
+          description: Successfully inserted.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/mf/collections/{title}/mfeatures/feature-000001
+                    rel: self
+                    title: feature-000001
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures:
+    get:
+      summary: Retrieves moving features
+      operationId: retrieveFeatures
+      tags:
+        - MovingFeatures
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/time.yml   
+        - $ref: parameters/bbox.yml
+        - $ref: parameters/format.yml
+      responses:
+        200:
+          description: Return static data of moving features.(1000 elements per return)
+          content:
+            application/json:
+              schema:
+                $ref: schemas/ItemCollection.yml
+              example:
+                $ref: examples/itemCollection.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures/featureKeys:
+    get:
+      summary: Search the data keys of the moving feature in the collection whose name is {title}
+      operationId: getFeatureKeys
+      tags:
+        - MovingFeatures
+      parameters:
+        - $ref: parameters/title.yml
+      responses:
+        200:
+          description: Returns Links of moving features for accessing their properties.(1000 elements per return)
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://pntml.io/dev/mf/v1/collections/Miraikan/mfeatures/featureid-0000000001
+                    rel: self
+                    type: application/json
+                    title: featureid-0000000001
+                  - href: https://pntml.io/dev/mf/ƒv1/collections/Miraikan/mfeatures/featureid-0000000002
+                    rel: self
+                    type: application/json
+                    title: featureid-0000000002
+                  - href: https://pntml.io/dev/mf/ƒv1/collections/Miraikan/mfeatures?resourceKey=06f11bfa-9fa9-452d-b9a8-249d6aee9d4f
+                    rel: next
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures/{featureKey}:
+    delete:
+      summary: Deletes the feature whose Key is {featureKey}
+      operationId: deleteFeature
+      tags:
+        - MovingFeatures
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+      responses:
+        204:
+          description: Successfully deleted.
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses the static data of the moving feature whose Key is {featureKey} (except temporal geometry and temporal properties)
+      operationId: accessFeature
+      tags:
+        - MovingFeatures
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+        - $ref: parameters/format.yml
+      responses:
+        200:
+          description: A moving feature static data.
+          content:
+            application/geo+json:
+              schema:
+                $ref: schemas/Item.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures/{featureKey}/temporalGeometry:
+    post:
+      summary: Adds movement data into the moving feature whose Key is {featureKey}
+      description: >-
+        A user can add more movement data into a specified moving feature.
+        This method is mandatory to be implemented.
+      operationId: insertTemporalGeometry
+      tags:
+        - TemporalGeometries
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/MF-JSON_Prism.schema.json#/definitions/temporalGeometry'
+            example:
+              $ref: examples/temporalGeometry.yml
+      responses:
+        201:
+          description: Returns link of the temporal geometry.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/mf/collections/{title}/mfeatures/feature-000001/temporalGeometry/geometry-000001
+                    rel: self
+                    title: geometry-000001
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses only the movement data of the moving feature whose Key is {featureKey}
+      operationId: accessTemporalGeometry
+      description: >-
+        A user can access only the movement data of a specified moving feature.
+        This method is mandatory to be implemented.
+      tags:
+        - TemporalGeometries
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+        - $ref: parameters/time.yml
+        - $ref: parameters/snapshotOption.yml
+      responses:
+        200:
+          description: A list of Temporalgeometry data.(1000 elements per return)
+          content:
+            application/json:
+              schema:
+                $ref: schemas/TemporalGeometry.yml
+              example:
+                $ref: examples/temporalGeometry.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures/{featureKey}/temporalGeometry/{tGeometrykey}:
+    get:
+      summary: Accesses only the movement data of the moving feature whose tGeometrykey is {tGeometrykey}
+      operationId: accessTemporalGeometryBytGeometrykey
+      tags:
+        - TemporalGeometries
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+        - $ref: parameters/tGeometrykey.yml
+      responses:
+        200:
+          description: A list of Temporalgeometry data.(1000 elements per return)
+          content:
+            application/json:
+              schema:
+                $ref: schemas/TemporalGeometry.yml
+              example:
+                $ref: examples/nonextTemporalGeometry.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures/{featureKey}/temporalProperties:
+    post:
+      summary: Adds parametric values as temporal non-spatial properties into the moving feature whose key is {featureKey}
+      description: >-
+        A user can add more parametric values into a specified moving feature.
+        This method is mandatory to be implemented.
+      operationId: insertTemporalProperties
+      tags:
+        - TemporalProperties
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/MF-JSON_Prism.schema.json#/definitions/temporalProperties'
+            example:
+              $ref: examples/temporalProperties.yml
+      responses:
+        201:
+          description: Returns link of the temporal properties.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/mf/collections/{title}/mfeatures/feature-000001/temporalProperties/length-000001
+                    rel: self
+                    title: property-000001
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses a temporal property whose name is {name}
+      description: >-
+        A user can access parametric value with a specified name of temporal property.
+        This method is mandatory to be implemented.
+      operationId: accessTemporalProperties
+      tags:
+        - TemporalProperties
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+        - $ref: parameters/name.yml
+        - $ref: parameters/time.yml
+        - $ref: parameters/snapshotOption.yml
+      responses:
+        200:
+          description: A list of Temporalproperty data.(1000 elements per return)
+          content:
+            application/json:
+              schema:
+                $ref: schemas/TemporalProperties.yml
+              example:
+                $ref: examples/parametricValues.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures/{featureKey}/temporalProperties/{tPropertyKey}:
+    get:
+      summary: Accesses a temporal property whose tPropertyKey is {tPropertyKey}
+      operationId: accessTemporalPropertiesBytPropertyKey
+      tags:
+        - TemporalProperties
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+        - $ref: parameters/tPropertyKey.yml
+      responses:
+        200:
+          description: A list of Temporalproperty data.(1000 elements per return)
+          content:
+            application/json:
+              schema:
+                $ref: schemas/TemporalProperties.yml
+              example:
+                $ref: examples/temporalProperties.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures/{featureKey}/properties:
+    put:
+      summary: Updates static properties of the moving feature whose Key is {featureKey} with a JSON object
+      description: >-
+        A user can update static properties of a specified moving feature. 
+        This method is mandatory to be optional.
+      operationId: updateProperties
+      tags:
+        - Properties
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/MF-JSON_Prism.schema.json#/definitions/properties'
+            example:
+              $ref: examples/properties.yml
+      responses:
+        200:
+          description: Returns link of the updated properties.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/mf/collections/{title}/mfeatures/feature-000001/properties/feature-000001-pp-000001
+                    rel: self
+                    title: feature-000001-pp-000001
+        default:
+          $ref: schemas/DefaultError.yml
+  /collections/{title}/mfeatures/{featureKey}/geometry:
+    put:
+      summary: Updates static geometry of the moving feature whose Key is {featureKey} with a GeoJSON object
+      description: >-
+        A user can update static geometry of a specified moving feature. 
+        This method is mandatory to be optional.
+      operationId: updateGeometry
+      tags:
+        - Geometry
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas/MF-JSON_Prism.schema.json#/definitions/geometry'
+            example:
+              $ref: examples/geometry.yml
+      responses:
+        200:
+          description: Returns link of the updated properties.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/mf/collections/{title}/mfeatures/feature-000001
+                    rel: self
+                    title: feature-000001
+        default:
+          $ref: schemas/DefaultError.yml
+    delete:
+      summary: Deletes geometry of Feature
+      description: >-
+        A user can delete the static geometry when the wrong data inserted.
+        This method is optional to be implemented.
+      operationId: deleteGeometry
+      tags:
+        - Geometry
+      parameters:
+        - $ref: parameters/title.yml
+        - $ref: parameters/featureKey.yml
+      responses:
+        204:
+          description: Successfully deleted
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/search:
+    post:
+      summary: Creates a new process to retrieve temporal geometries with spatiotemporal conditions and executes it ASYNCHRONOUSLY
+      description: >-
+        A user can asynchronously retrieve temporal geometries with more complex conditions.
+        This method is mandatory to be implemented.
+      operationId: searchProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/SearchProcess.yml
+      responses:
+        202:
+          description: Accepted a search process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                links:
+                  - title: Results
+                    href: https://dps.aaic.hpcc.jp/mf/processes/search/943bb0eb-8609-4d28-a147-d54b9816b69e
+                    rel: self
+                    type: application/geo+json
+                jobs:
+                  - name: Search
+                    id: 943bb0eb-8609-4d28-a147-d54b9816b69e
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/search/{resultId}:
+    get:
+      summary: Obtatins the results of temporal geometries with the result id
+      description: >-
+        A user can obtain the result of a specified search process via this method.
+      operationId: getSearchResults
+      tags:
+        - Processes
+      parameters:
+        - $ref: parameters/resultId.yml
+      responses:
+        200:
+          description: Return results as Moving Features JSON
+          content:
+            application/json:
+              schema:
+                $ref: schemas/SearchProcessResult.yml
+              example:
+                $ref: examples/search.yml
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/stay:
+    post:
+      summary: Creates a new aggregation process to calcuate the staying time or the number of moving features and executes it ASYNCHRONOUSLY
+      description: >-
+        A user can asynchronously calculate the staying time of moving features with a aggregation (ex., sum, min, max, avg, count) function and spatio-temporal conditions.
+        This method is mandatory to be implemented.
+      operationId: stayProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/StayProcess.yml
+      responses:
+        202:
+          description: Accepted a stay process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: results
+                  href: https://dps.aaic.hpcc.jp/mf/processes/stay/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  type: application/geo+json
+                jobs:
+                  - name: Stay
+                    id: 943bb0eb-8609-4d28-a147-d54b9816b69e
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/stay/{resultId}:
+    get:
+      summary: Obtatins the stay aggregation time (second) or count with the result id
+      description: >-
+        A user can obtain the stay aggregation time (second) or count of a specified stay process via this method.
+      operationId: getStayResults
+      tags:
+        - Processes
+      parameters:
+        - $ref: parameters/resultId.yml
+      responses:
+        200:
+          description: Return results as a GeoJSON FeatureCollection object.
+          content:
+            application/geo+json:
+              schema:
+                $ref: schemas/StayProcessResult.yml
+              example:
+                $ref: examples/stay.yml
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/train/gridmodel:
+    post:
+      summary: Create a process to learn a grid model to predict the population of given areas with a time interval and executes it ASYNCHRONOUSLY
+      description: >-
+        A user can asynchronously train a grid model to predict the population of given areas with a time interval.
+      operationId: trainGridModel
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/TrainGridModelProcess.yml
+      responses:
+        202:
+          description: Accepted a train count process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: results
+                  href: https://dps.aaic.hpcc.jp/mf/processes/train/gridmodel/T0000000001
+                  type: application/geo+json
+                jobs:
+                  - name: Train
+                    id: T0000000001
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/train/gridmodel/{trainId}:
+    get:
+      summary: Get learning model creation result by id
+      description: >-
+        A user can use this method to get the results of building the specified learning model.
+      operationId: getTrainDescription
+      tags:
+        - Processes
+      parameters:
+        - $ref: parameters/trainId.yml
+      responses:
+        200:
+          description: Return results as a JSON object.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/TrainGridModel.yml
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/train/gridmodel/{trainId}/predict:
+    get:
+      summary: Predict the population at a given a time by using a grid training model
+      description: >-
+        A user can get a result of the prediction of population.
+      operationId: getPredictByGridModel
+      tags:
+        - Processes
+      parameters:
+        - $ref: parameters/trainId.yml
+        - $ref: parameters/time.yml
+        - $ref: parameters/titleOptionArray.yml
+      responses:
+        200:
+          description: Return results as a GeoJSON FeatureCollection object.
+          content:
+            application/geo+json:
+              schema:
+                $ref: schemas/StayProcessResult.yml
+              example:
+                $ref: examples/stay.yml
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/continous:
+    post:
+      summary: Creates a new aggregation process to calculate the staying time or the number of moving features and executes it CONTINUOUSLY.
+      description: >-
+          A user can continuously calculate the staying time of moving features with a aggregation (ex., sum, min, max, avg) function and spatio-temporal conditions.
+          This method should be implemented using Apache Kafka.
+      operationId: continousStayProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/ContinuousStayProcess.yml
+      responses:
+        202:
+          description: Accepted a continuous stay process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: results
+                  href: https://dps.aaic.hpcc.jp/mf/processes/train/gridmodel/T0000000001
+                  type: application/geo+json
+                jobs:
+                  - name: Train
+                    id: T0000000001
+        default:
+          $ref: schemas/DefaultError.yml
+  /jobs/{jobId}:
+    get:
+      summary: Access the job status of an executing process
+      description: >-
+         A user can access the status of his/her process by using this API.
+      operationId: getJobInfo
+      tags:
+        - Jobs
+      parameters:
+        - $ref: parameters/job.yml
+      responses:
+        200:
+          description: Returns the job status
+          content:
+            application/json:
+              schema:
+                $ref: schemas/JobStatus.yml
+        404:
+          description: A job with the specified name was not found.
+        default:
+          $ref: schemas/DefaultError.yml
+  /user/collections/{title}/permissions:
+    parameters:
+      - $ref: parameters/title.yml
+    get:
+      summary: Accesses permission information from the MovingFeature with the specified title.
+      description: |
+        Accesses permission information from the MovingFeature with the specified title.
+
+        Permission information is the user name and group name with write permission and read permission.
+
+      operationId: getCollectionPermissions
+      tags:
+        - Permissions
+      responses:
+        200:
+          description: >-
+            Successful accesses permission information from the MovingFeature with the specified title.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/PermissionInformation.yml
+        default:
+          $ref: schemas/DefaultError.yml
+    put:
+      summary: Modify permission information from the MovingFeature with the specified title.
+      description: |
+        Modify permission information from the MovingFeature with the specified title.
+
+        Permission information is the user name and group name with write permission and read permission.
+
+      operationId: modifyPermissions
+      tags:
+        - Permissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/PermissionInformation.yml
+      responses:
+        202:
+          description: >-
+            Accepted a modify request.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                link:
+                  href: https://dps.aaic.hpcc.jp/mf/user/collections/{title}/permissions
+                  type: application/geo+json
+        default:
+          $ref: schemas/DefaultError.yml

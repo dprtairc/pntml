@@ -1,0 +1,39 @@
+type: object
+description: User account information 
+required:
+  - userId
+  - commonName
+  - surName
+  - newPassword
+  - checkPassword
+  - role
+properties:
+  userId: 
+    type: string
+    description: "User Account ID"
+    example: User001
+  commonName: 
+    type: string
+    description: "Common Name for User Account"
+    example: CommonName(SurName User001)
+  surName: 
+    type: string
+    description: "Sur Name for User Account"
+    example: SurName
+  newPassword:
+    type: string
+    description: "User Account New Password"
+    example: NewPassword#1234567890
+  checkPassword:
+    type: string
+    description: "User Account New Password for Confirm"
+    example: NewPassword#1234567890
+  role:
+    type: string
+    description: "Role for User Account"
+    enum:
+      - ADMINS
+      - CREATORS
+      - WRITERS
+      - USERS
+    example: CREATORS

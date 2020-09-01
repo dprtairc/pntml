@@ -1,0 +1,6 @@
+name: userId
+in: path
+required: true
+description: the User Id given by a user, being unique.
+schema:
+  type: string

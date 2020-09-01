@@ -1,0 +1,11 @@
+name: tags
+in: query
+description: >
+  Full-text search.
+required: false
+schema:
+  type: array
+  items:
+    type: string
+style: form
+explode: false

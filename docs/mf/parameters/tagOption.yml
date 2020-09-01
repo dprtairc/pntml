@@ -1,0 +1,12 @@
+name: tag
+in: query
+description: >
+  Full-text search.
+required: false
+schema:
+  type: array
+  minItems: 1
+  items:
+    type: string
+style: form
+explode: false

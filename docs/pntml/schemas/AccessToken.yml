@@ -1,0 +1,21 @@
+type: object
+description: access token information
+required:
+  - code
+  - grant_type
+  - scope
+properties:
+  code:
+    type: string
+    description: "Authorization Code for OAuth Application"
+    example: VcYWu0
+  grant_type: 
+    type: string
+    description: "Grant Type for OAuth Application"
+    enum:
+      - authorization_code
+    example: authorization_code
+  scope: 
+    type: string
+    description: "Scope (Read, Write etc) for OAuth Application"
+    example: read

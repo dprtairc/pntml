@@ -1,0 +1,27 @@
+type: object
+description: Permission information 
+properties:
+  writeUsers:
+    type: array
+    description: "List of User ID who have write permission."
+    example:
+      - MemberUser001
+      - MemberUser002
+  writeGroups:
+    type: array
+    description: "List of Group ID who have write permission."
+    example:
+      - MemberGroup001
+      - MemberGroup002
+  readUsers:
+    type: array
+    description: "List of User ID who have read permission."
+    example:
+      - MemberUser003
+      - MemberUser004
+  readGroups:
+    type: array
+    description: "List of Group ID who have read permission."
+    example:
+      - MemberGroup003
+      - MemberGroup004

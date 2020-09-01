@@ -1,0 +1,44 @@
+type: FeatureCollection
+topology: Intersects
+time:
+  - 2011-11-11T12:22:11Z
+  - 2012-11-24T12:32:43Z
+features:
+  - type: Feature
+    geometry:
+      type: Polygon
+      coordinates:
+        - - - -122.308150179
+            - 37.488035566
+          - - -122.597502109
+            - 37.538869539
+          - - -122.576687533
+            - 37.613537207
+          - - -122.2880486
+            - 37.562818007
+          - - -122.308150179
+            - 37.488035566
+    properties:
+      name: idx1
+      col: 1
+      row: 0
+      stay: 10
+  - type: Feature
+    geometry:
+      type: Polygon
+      coordinates:
+        - - - -122.308150179
+            - 37.488035566
+          - - -122.597502109
+            - 37.538869539
+          - - -122.576687533
+            - 37.613537207
+          - - -122.2880486
+            - 37.562818007
+          - - -122.308150179
+            - 37.488035566
+    properties:
+      name: idx2
+      col: 1
+      row: 1
+      stay: 20

@@ -1,0 +1,6 @@
+name: id
+in: query
+required: false
+description: the Id of features.
+schema:
+  type: string

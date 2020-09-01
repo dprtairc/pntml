@@ -1,0 +1,41 @@
+description: >
+  It transforms a source coordinate into a target coordinate by using quaternion 
+  of Euler angles and scale values.
+  If you set this, you must also set "transformCRS" parameter.
+type: object
+properties:
+  origin:
+    description: The orgin coordinate [longitue, latitute, (altitude)] based on WGS84.
+    type: array
+    items:
+      type: number
+    minItems: 2
+    maxItems: 3
+    example:
+      - 139.778129
+      - 35.618459
+  euler:
+    description: >
+      Euler angles to quaternion form, defining the angle around the X-axis (roll) as ψ,
+      the Y-axis (pitch) as θ, and the Z-axis (yaw) as ϕ, by degrees.
+    type: array
+    items:
+      type: number
+    minItems: 3
+    maxItems: 3
+    example:
+      - 0
+      - 0
+      - 30
+  scale:
+    description: >
+      The scale value of numbers along the X, Y, and Z-axis in order as three scale factors.
+    type: array
+    items:
+      type: number
+    minItems: 3
+    maxItems: 3
+    example:
+      - 1
+      - 1
+      - 1

@@ -1,0 +1,21 @@
+name: time
+in: query
+description: |
+  Either a sequence of monotonic increasing instants with date-time strings 
+  (ex. "2018-02-12T23:20:50Z") that adheres to RFC3339.
+   The array does not allow the same element.
+
+  * (O) "2018-02-12T00:00:00Z"
+  * (O) "2018-02-12T00:00:00Z", "2018-02-12T23:59:59Z"
+  * (X) "2018-02-12T00:00:00Z", "2018-02-12T00:00:00Z"
+  * (X) "2018-02-12T23:59:59Z", "2018-02-12T00:00:00Z"
+
+required: true
+schema:
+  type: array
+  minItems: 1
+  maxItems: 2
+  items:
+    type: string
+style: form
+explode: false

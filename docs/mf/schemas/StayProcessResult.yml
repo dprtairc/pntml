@@ -1,0 +1,35 @@
+type: array
+minItems: 1
+items:
+  type: object
+  required:
+    - type
+    - geometry
+    - properties
+  properties:
+    type:
+      type: string
+      enum:
+        - Feature
+    geometry:
+      type: object
+      description: it is the search condition what user inputed.
+      required:
+        - type
+        - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+            - Polygon
+        coordinates:
+          type: array
+          description: Array of Array of Array of numbers.
+    properties:
+      type: object
+      required:
+        - stay
+      description: return stay time and infomations what user inputed.
+      properties:
+        stay:
+          type: number

@@ -1,0 +1,11 @@
+type: object
+required:
+  - temporalProperties
+  - links
+properties:
+  temporalProperties:
+    $ref: MF-JSON_Prism.schema.json#/definitions/temporalProperties
+  links:
+    type: array
+    items:
+      $ref: Link.yml

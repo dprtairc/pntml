@@ -1,0 +1,34 @@
+type: object
+description: OAuth Application Information 
+required:
+  - description
+properties:
+  applicationName: 
+    type: string
+    description: "OAuth Application Name"
+    example: Test Application
+  clientId: 
+    type: string
+    description: "Client Id for OAuth Application"
+    example: 00aa00a0-aaa0-000a-0aa0-00aa00000000
+  clientSecret: 
+    type: string
+    description: "Client Secret for OAuth Application"
+    example: 22cc2222-cc22-22cc-22cc-22cc22222222
+  redirectUrl:
+    type: string
+    description: "Redirect URL (OAuth Callback URL) for OAuth Application. URL to return the authentication code."
+    example: http://localhost:11111/top
+  homepageUrl: 
+    type: string
+    description: "Homepage URL (Ajax Callback URL) for OAuth Application"
+    example: http://localhost:11111/index
+  description: 
+    type: string
+    description: "Description for OAuth Application"
+    example: Application Description
+  scopes: 
+    type: string
+    description: "Scopes for OAuth Application"
+    example: read,write
+

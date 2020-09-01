@@ -1,0 +1,14 @@
+type: object
+description: login information
+required:
+  - name
+  - password
+properties:
+  name:
+    type: string
+    description: "User Account ID"
+    example: UserName0001
+  password: 
+    type: string
+    description: "User Account Password"
+    example: CurrentPassword$9876543210

@@ -1,0 +1,29 @@
+- datetimes: 
+    - 2011-07-14T22:01:01.450Z
+    - 2011-07-14T23:01:01.450Z
+    - 2011-07-15T00:01:01.450Z
+  length:
+    type: measure
+    form: MTR
+    values:
+      - 1.0
+      - 2.4
+      - 1.0
+    interpolation: Linear
+    description: description1
+  camera:
+    type: image
+    values:
+      - http://www.opengis.net/spec/movingfeatures/json/1.0/prism/example/image1
+      - http://www.opengis.net/spec/movingfeatures/json/1.0/prism/example/image2
+      - iVBORw0KGgoAAAANSUhEU......
+    interpolation: Discrete
+- datetimes: 
+    - 2011-07-15T22:01:01.450Z
+    - 2011-07-16T22:01:01.450Z
+  labels:
+    type: text
+    values:
+      - car
+      - human
+    interpolation: Discrete

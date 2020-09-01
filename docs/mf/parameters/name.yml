@@ -1,0 +1,10 @@
+name: name
+in: query
+required: false
+schema:
+  type: array
+  items:
+    type: string
+  minItems: 1
+style: form
+explode: false

@@ -1,0 +1,13 @@
+type: object
+required:
+  - job
+  - status
+properties:
+  job:
+    $ref: Job.yml
+  status:
+    type: string
+    example: Failed
+  exception:
+    type: string
+    example: Exceptions

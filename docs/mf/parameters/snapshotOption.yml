@@ -1,0 +1,6 @@
+name: snapshot
+in: query
+schema:
+  type: boolean
+required: false
+description: If true, the endpoint returns only temporal geometry (or temporal property) with the discripted snapshot at each time.

@@ -1,0 +1,11 @@
+type: object
+required:
+  - links
+properties:
+  links:
+    type: array
+    items:
+      $ref: Link.yml
+      example:
+          href: https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan
+          rel: self

@@ -1,0 +1,26 @@
+type: object
+required:
+  - type
+  - features
+properties:
+  type:
+    type: string
+    enum:
+      - FeatureCollection
+  features:
+    type: array
+    items:
+      $ref: Item.yml
+  links:
+    type: array
+    items:
+      $ref: Link.yml
+  timeStamp:
+    type: string
+    format: date-time
+  numberMatched:
+    type: integer
+    minimum: 0
+  numberReturned:
+    type: integer
+    minimum: 0

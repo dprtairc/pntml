@@ -1,0 +1,17 @@
+description: |-
+  One or more bounding boxes that describe the spatial extent of the dataset.
+  In the Core only a single bounding box is supported. Extensions may support
+  additional areas. If multiple areas are provided, the union of the bounding
+  boxes describes the spatial extent.
+  West, south, east, north edges of the bounding box. 
+  By default this is WGS 84 longitude/latitude.
+type: array
+minItems: 4
+maxItems: 6
+items:
+  type: number
+example:
+  - -180
+  - -90
+  - 180
+  - 90

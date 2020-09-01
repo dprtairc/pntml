@@ -1,0 +1,7 @@
+name: jobId
+in: path
+description: "The Processing Job Id"
+required: true
+schema:
+  type: string
+  format: uuid

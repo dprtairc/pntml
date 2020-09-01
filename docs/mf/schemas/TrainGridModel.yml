@@ -1,0 +1,180 @@
+type: object
+properties:
+  inputs:
+    type: array
+    description: >
+      a list of target collection names for processing. The element MUST be in the format of a URL.
+      Because of the server performance, the maximum size of URLs is 10.
+    items:
+      type: string
+    minItems: 1
+    maxItems: 10
+  status: 
+    type: string
+    enum:
+      - Running
+      - Completed
+  parameter:
+    type: object
+    required:
+      - time
+      - interval
+      - aggregate
+      - angles
+      - grids
+    description: >
+      parameter for learning a model
+    properties:
+      aggregate:
+        type: string
+      interval:
+        type: integer
+        description: >
+          a time interval to create a grid snapshot (min)
+      time:
+        $ref: LifeSpan.yml
+      angles:
+        type: object
+      grids:
+        type: array
+        minItems: 1
+        items:
+           type: object
+           required:
+             - type
+             - geometry
+             - properties
+           properties:
+             type:
+               type: string
+               enum:
+                 - Feature
+             geometry:
+               type: object
+               description: it is the search condition what user inputed.
+               required:
+                 - type
+                 - coordinates
+               properties:
+                 type: 
+                   type: string
+                   enum: 
+                     - Polygon
+                 coordinates:
+                   type: array
+                   description: Array of Array of Array of numbers.
+             properties:
+               type: object
+               required:
+                 - index
+               description: return stay time and infomations what user inputed.
+               properties:
+                 index:
+                   type: array
+example:
+  status: Running
+  inputs: [Miraikan01]
+  parameter:
+    time:
+      - 2011-07-14T22:01:01Z
+      - 2011-07-15T01:11:22Z
+    interval: 5
+    aggregate: SUM
+    angles: [30]
+    grids:
+      - type: Feature
+        properties:
+          index: [0,0]
+        geometry:
+          type: Polygon
+          coordinates:
+          - - - 139.77687022792327
+              - 35.61939750755758
+            - - 139.77686746838606
+              - 35.6193936048534
+            - - 139.77686268872947
+              - 35.619395858081106
+            - - 139.77686544826634
+              - 35.619399760785285
+            - - 139.77687022792327
+              - 35.61939750755758
+      - type: Feature
+        properties:
+          index: [1,0]
+        geometry:
+          type: Polygon
+          coordinates:
+          - - - 139.77686544826634
+              - 35.619399760785285
+            - - 139.77686268872947
+              - 35.619395858081106
+            - - 139.77685790907253
+              - 35.61939811130861
+            - - 139.77686066860923
+              - 35.61940201401279
+            - - 139.77686544826634
+              - 35.619399760785285
+      - type: Feature
+        properties:
+          index: [0,1]
+        geometry:
+          type: Polygon
+          coordinates:
+          - - - 139.77686746838606
+              - 35.6193936048534
+            - - 139.7768647088492
+              - 35.61938970214911
+            - - 139.77685992919282
+              - 35.61939195537681
+            - - 139.77686268872947
+              - 35.619395858081106
+            - - 139.77686746838606
+              - 35.6193936048534
+      - type: Feature
+        properties:
+          index: [1,1]
+        geometry:
+          type: Polygon
+          coordinates:
+          - - - 139.77686268872947
+              - 35.619395858081106
+            - - 139.77685992919282
+              - 35.61939195537681
+            - - 139.77685514953612
+              - 35.61939420860432
+            - - 139.77685790907253
+              - 35.61939811130861
+            - - 139.77686268872947
+              - 35.619395858081106
+      - type: Feature
+        properties:
+          index: [0,2]
+        geometry:
+          type: Polygon
+          coordinates:
+          - - - 139.7768647088492
+              - 35.61938970214911
+            - - 139.7768619493126 
+              - 35.619385799444785
+            - - 139.7768571696564 
+              - 35.61938805267249
+            - - 139.77685992919282
+              - 35.61939195537681
+            - - 139.7768647088492
+              - 35.61938970214911
+      - type: Feature
+        properties:
+          index: [1,2]
+        geometry:
+          type: Polygon
+          coordinates:
+          - - - 139.77685992919282 
+              - 35.61939195537681
+            - - 139.7768571696564 
+              - 35.61938805267249
+            - - 139.77685239 
+              - 35.6193903059
+            - - 139.77685514953612 
+              - 35.61939420860432
+            - - 139.77685992919282 
+              - 35.61939195537681

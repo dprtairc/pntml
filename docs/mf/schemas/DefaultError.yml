@@ -1,0 +1,16 @@
+description: An error occurred.
+content:
+  application/json:
+    schema:
+      type: object
+      description: |-
+        Information about the exception: an error code plus an optional description.
+      required:
+        - code
+      properties:
+        code:
+          type: string
+          example: 400
+        description:
+          type: string
+          example: Bad Request

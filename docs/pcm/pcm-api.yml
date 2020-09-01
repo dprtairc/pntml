@@ -1,0 +1,415 @@
+openapi: 3.0.2
+info:
+  title: PnTML 3DMap API
+  description: >-
+    This is the OpenAPI definition of NEDO 3DMap API specification.
+    xxxxxx.
+  version: 1.0.0
+  contact:
+    name: ARIC Data Platform Research Team
+    url: http://www.airc.aist.go.jp/en/dprt/
+  license:
+    name: Apache License 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://dps.aaic.hpcc.jp/map3d
+    description: Development server
+    variables:
+      port:
+        enum:
+          - xxxx
+        default: xxxx
+  - url: https://dps.aaic.hpcc.jp/map3d
+    description: Test server
+    variables:
+      port:
+        default: xxxx
+tags:
+  - name: PointCloudMaps
+    description: 3D Point Cloud Maps
+  - name: PointClouds
+    description: 3D Point Cloud Data
+  #- name: MeshMaps
+  #  description: 3D Mesh Maps
+  - name: Processes
+    description: Asynchronized Operations (search, voxelize, ...) about 3D Maps
+  - name: Jobs
+    description: Status of Operations
+  - name: Permissions
+    description: Permissions about PCMs
+paths:
+  /pcms:
+    post:
+      summary: Registers catalogs of Point Cloud Maps.
+      description: >-
+        A user SHOULD register metadata about a PCM
+        before uploading a set of point cloud files. 
+        This method is mandatory to be implemented.
+      operationId: registerMetadata
+      tags:
+        - PointCloudMaps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/PCMDescription.yml
+      responses:
+        201:
+          description: >- 
+            Successful Create a PCM to manage a set of point clouds. 
+            You can upload point cloud data by using URL.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan
+                    rel: self
+                    title: Miraikan
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Retrieves catalogs of Point Cloud Maps.
+      description: >-
+        A user can retrieve catalogs to access PCMs by simple filtering and a limit.
+        This method is mandatory to be implemented.
+      operationId: searchCatalog
+      tags:
+        - PointCloudMaps
+      parameters:
+        - $ref: parameters/bboxOption.yml
+        - $ref: parameters/timeOption.yml
+        - $ref: parameters/tagOption.yml
+        - $ref: parameters/limit.yml
+      responses:
+        200:
+          description: A collection of PCM catalogs.
+          content:
+            application/geo+json:
+              schema:
+                $ref: schemas/CatalogCollection.yml
+              example:
+                $ref: examples/catalogCollection.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /pcms/{title}:
+    post:
+      summary: Uploads a set of point cloud files and Stores them into the PCM
+      description: >-
+        A user uploads a set of point cloud files into a specific PCM
+        This method is mandatory to be implemented.
+      operationId: uploadPointClouds
+      tags:
+        - PointClouds
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PointCloudFiles'
+      responses:
+        202:
+          description: Accepted storing
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan/points
+                    rel: self
+                    type: text/csv
+                jobs:
+                  - name: File1
+                    id: 06f11bfa-9fa9-452d-b9a8-249d6aee9d4f
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses a catalog about the PCM with the specified name.
+      description: >-
+        A user can access a catalog that the user defined for the registration.
+        This method is mandatory to be implemented.
+      operationId: accessMetadata
+      tags:
+        - PointClouds
+      responses:
+        200:
+          description: the metadata being returned
+          content:
+            application/json:
+              schema:
+                $ref: schemas/PCMDescription.yml
+        404:
+          description: A PCM with the specified name was not found.
+    parameters:
+      - $ref: parameters/title.yml
+    delete:
+      summary: Deletes a PCM including catalog and point cloud data.
+      tags:
+        - PointClouds
+      description: >-
+        Only an authorized user can delete a PCM.
+        Before finishing the job, a user cannot use the same title to create a PCM.
+        This method is optional to be implemented.
+      operationId: deletePCMAll
+      responses:
+        202:
+          description: Accepted a delete request.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Job.yml
+        404:
+          description: A PCM with the specified name was not found.
+        default:
+          $ref: schemas/DefaultError.yml
+  /pcms/{title}/points:
+    parameters:
+      - $ref: parameters/title.yml
+    get:
+      summary: Retrieves point cloud data from the PCM with the specified name.
+      description: >-
+        A user can retrieve a sampled data from the PCM with conditions,  
+        such as bounding box , time period and the size of sampling.
+        The attributes of the result data are "Coordinate (Longitude,Latitude and Height of WGS84)", 
+        "Intensity", "Red", "Green" and "Blue".
+        If the point cloud to be searched spans multiple EPSG codes, the processing will be stopped.
+        The "Intensity", "Red", "Green" and "Blue" of the result data are 
+        the average values ​​of the point cloud in the voxel.
+      operationId: retrievePointClouds
+      tags:
+        - PointClouds
+      parameters:
+        - $ref: parameters/bbox.yml
+        - $ref: parameters/time.yml
+        - $ref: parameters/voxel.yml
+      responses:
+        200:
+          description: return a zip file containing point cloud data
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        204:
+          description: No point cloud data.
+        404:
+          description: A PCM with the specified name was not found.
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/search:
+    post:
+      summary: Creates a new search process with conditions and executes it ASYNCHRONOUSLY
+      description: >-
+        A user can search point cloud data with more complex conditions asynchonously.
+        This method is mandatory to be implemented.
+      operationId: searchProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/SearchProcess.yml
+      responses:
+        202:
+          description: Accepted a search process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: 943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.aaic.hpcc.jp/map3d/pcms/processes/search/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  type: text/csv
+                jobs:
+                  - name: Search
+                    id: 06f11bfa-9fa9-452d-b9a8-249d6aee9d4f
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/search/{resultId}:
+    parameters:
+      - $ref: parameters/resultId.yml
+    get:
+      summary: Obtains search results with the result id.
+      description: >-
+        A user can obtain the search result via this method.
+      operationId: getSearchResults
+      tags:
+        - Processes
+      responses:
+        200:
+          description: return a file containing point cloud data
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        204:
+          description: No result.
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/voxelize:
+    post:
+      summary: Creates a new process of voxelization with conditions and executes it ASYNCHRONOUSLY
+      description: >-
+        A user can calculate voxelized point cloud data with filtering conditions asynchonously.
+        The output file format is CSV only.
+        The coordinate system of the result data is the UTM coordinate system of WGS84. 
+        (EPSG:32601-32660,32701-32760)
+        the EPSG code is determined from the coordinate value of the point cloud to be searched.
+        If the point cloud to be searched spans multiple EPSG codes, the processing will be stopped.
+        This method is mandatory to be implemented.
+      operationId: voxelProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/VoxelProcess.yml
+      responses:
+        202:
+          description: Accepted a voxelization process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: results
+                  href: https://dps.aaic.hpcc.jp/map3d/pcms/processes/voxelize/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  type: text/csv
+                jobs:
+                  - name: Voxelize
+                    id: 06f11bfa-9fa9-452d-b9a8-249d6aee9d4f
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/voxelize/{resultId}:
+    get:
+      summary: Obtains voxelization results with the result id.
+      description: >-
+        A user can obtain the voxelize result via this method.
+      operationId: getVoxelResults
+      tags:
+        - Processes
+      parameters:
+        - $ref: parameters/resultId.yml
+      responses:
+        200:
+          description: return a zip file containing point cloud data
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        204:
+          description: The result is expired.
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
+  /jobs/{jobId}:
+    parameters:
+      - $ref: parameters/job.yml
+    get:
+      summary: "Access the job status of an executing process"
+      description: >-
+         A user can acess the status of his/her process by using this API.
+      operationId: "getJobInfo"
+      tags:
+        - "Jobs"
+      responses:
+        200:
+          description: Returns the job status
+          content:
+            application/json:
+              schema:
+                $ref: schemas/JobStatus.yml
+        404:
+          description: A Job with the specified name was not found.
+        default:
+          $ref: schemas/DefaultError.yml
+  /user/pcms/{title}/permissions:
+    parameters:
+      - $ref: parameters/title.yml
+    get:
+      summary: Accesses permission information from the PCM with the specified name.
+      description: |
+        Accesses permission information from the PCM with the specified name.
+
+        Permission information is the user name and group name with write permission and read permission.
+
+      operationId: getPermission
+      tags:
+        - Permissions
+      responses:
+        200:
+          description: >-
+            Successful accesses permission information from the PCM with the specified name.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/PermissionInformation.yml
+        403:
+          description: >-
+            (Forbidden) Cannot get permission information for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: >-
+            Permission information was not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    put:
+      summary: Modify permission information from the PCM with the specified name.
+      description: |
+        Modify permission information from the PCM with the specified name.
+
+        Permission information is the user name and group name with write permission and read permission.
+
+      operationId: modifyPermissions
+      tags:
+        - Permissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/PermissionInformation.yml
+      responses:
+        202:
+          description: >-
+            Accepted a modify request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot modify permission information for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+components:
+  schemas:
+    PointCloudFiles:
+      type: object
+      properties:
+        pointCloudFiles:
+          description: File Name List.
+          type: array
+          items:
+            type: string
+            format: binary

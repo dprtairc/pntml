@@ -1,0 +1,109 @@
+type: object
+description: This is the description of a train process for a grid model of population
+required:
+  - inputs
+  - parameter
+properties:
+  inputs:
+    type: array
+    description: >
+      a list of target collection names for processing. The element MUST be in the format of a URL.
+      Because of the server performance, the maximum size of URLs is 10.
+    items:
+      type: string
+    minItems: 1
+    maxItems: 10
+  parameter:
+    type: object
+    description: >
+      parameter for learning a model
+    required:
+      - aggregate
+      - interval
+      - time
+      - angles
+      - grid
+    properties:
+      aggregate:
+        type: string
+        enum:
+          - SUM
+          - AVG
+          - MIN
+          - MAX
+          - COUNT
+          - NORMALIZE
+      interval:
+        type: integer
+        description: >
+          a time interval to create a grid snapshot (min)
+      time:
+        $ref: LifeSpan.yml
+      angles:
+        type: array
+        items: 
+          type: number
+        minItems: 1
+        maxItems: 3
+        description: >
+                    bearing of map(degrees).
+                    Absolute bearing refers to the angle between true North and map Plane
+                    (Plane of Longitude Latitude, Longitude Elevation, Latitude Elevation).
+      grid:
+        type: object
+        required:
+          - type
+          - geometry
+          - properties
+        properties:
+          type: 
+            type: string
+            enum: 
+              - Feature
+          geometry:
+            type: object
+            required:
+              - type
+              - coordinates
+            properties:
+              type: 
+                type: string
+                enum: 
+                  - Point
+              coordinates:
+                items: 
+                maxItems: 3
+                minItems: 2
+          properties:
+            type: object
+            required:
+              - resolution
+              - nrow
+              - ncol
+            properties:
+              resolution:
+                type: number
+              nrow: 
+                type: number
+              ncol:
+                type: number
+example:
+  inputs: [Miraikan01]
+  parameter:
+    aggregate: SUM
+    interval: 5
+    time: 
+      - 2011-07-14T22:01:01Z
+      - 2011-07-15T01:11:22Z
+    angles: [30] 
+    grid:
+      type: Feature 
+      geometry:
+        type: Point
+        coordinates:
+          - 139.77685239
+          - 35.6193903059
+      properties:
+        resolution: 0.5
+        nrow: 2
+        ncol: 3

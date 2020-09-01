@@ -1,0 +1,27 @@
+type: object
+description: Modify group information 
+required:
+  - description
+properties:
+  description: 
+    type: string
+    description: "Description for Group ID"
+    example: Group ID(DPRT-GROUP001)
+  members:
+    type: array
+    description: "Modify list of Member User ID"
+    items:
+      type: string
+      example: [ MemberUser001, MemberUser002, MemberUser003 ]
+  addMembers:
+    type: array
+    description: "Add list of Member User ID"
+    items:
+      type: string
+      example: null
+  delMembers:
+    type: array
+    description: "Delete list of Member User ID"
+    items:
+      type: string
+      example: null

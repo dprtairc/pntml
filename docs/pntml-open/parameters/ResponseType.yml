@@ -1,0 +1,6 @@
+name: response_type
+in: query
+description: The Response Type for OAuth Application.
+required: true
+schema:
+  type: string

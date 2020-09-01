@@ -1,0 +1,15 @@
+type: object
+description: >-
+  Spatial coordinate reference systems are identified by a URI.
+required:
+  - type
+properties:
+  type:
+    type: string
+    example: name
+  properties:
+    type: object
+    properties:
+      name: 
+        type: string
+        example: urn:ogc:def:crs:OGC:1.3:CRS84

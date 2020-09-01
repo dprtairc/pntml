@@ -1,0 +1,24 @@
+type: object
+description: This is the search range info.
+required:
+  - type
+  - geometry
+properties:
+  type:
+    type: string
+    enum:
+      - Feature
+  geometry:
+    type: object
+    description: This is a Polygon which is GeoJSON format.
+    required:
+      - type
+      - coordinates
+    properties:
+      type: 
+        type: string
+        enum: 
+          - Polygon
+      coordinates:
+        type: array
+        description: Array of Array of Array of numbers.

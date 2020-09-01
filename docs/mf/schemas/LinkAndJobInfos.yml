@@ -1,0 +1,14 @@
+type: object
+required:
+  - links
+  - jobs
+properties:
+  links:
+    type: array
+    items:
+      $ref: Link.yml
+  jobs:
+    type: array
+    description: List of job information
+    items: 
+      $ref: Job.yml

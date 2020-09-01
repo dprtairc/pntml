@@ -1,0 +1,156 @@
+type: object
+description: This is the description of a continous stay process using Apache Kafka
+required:
+  - inputs
+  - output
+  - queryId
+  - parameter
+properties:
+  inputs:
+    type: object
+    description: >
+      two list of Kafka topics for processing: moving objects and moving sensors.
+      Each array can take one or more Kafka input topics.
+      Because of the server performance, the maximum size of topics is 5.
+    properties:
+      movingObjects:
+        type: array
+        items:
+          description: >
+            Kafka input topics
+          type: string
+          minItems: 1
+          maxItems: 5
+      movingSensors:
+        type: array
+        items:
+          description: >
+            Kafka input topics
+          type: string
+          minItems: 1
+          maxItems: 5
+  output:
+    type: string
+    description: >
+      Kafka output topic name
+  queryId:
+    type: string
+    description: >
+      user specified query ID
+  parameter:
+    type: object
+    description: >
+      parameter for learning a model
+    required:
+      - aggregate
+      - window
+      - angles
+      - grid
+    properties:
+      sensorRange:
+        description: >
+        type: number
+      aggregate:
+        type: string
+        enum:
+          - SUM
+          - AVG
+          - MIN
+          - MAX
+      window:
+        type: object
+        description: >
+          a time interval to create a grid snapshot (min)
+        required:
+          - interval
+          - step
+        properties:
+          type:
+            type: string
+            enum:
+              - TIME
+              - COUNT
+          interval:
+            type: number
+          step:
+            type: number
+      angle:
+        type: number
+        description: >
+          bearing of map(degrees).
+          Absolute bearing refers to the angle between true North and map Plane
+          (Plane of Longitude Latitude).
+      grid:
+        type: object
+        required:
+          - type
+          - geometry
+          - properties
+        properties:
+          type: 
+            type: string
+            enum: 
+              - Feature
+          geometry:
+            type: object
+            required:
+              - type
+              - coordinates
+            properties:
+              type: 
+                type: string
+                enum: 
+                  - Polygon
+              coordinates:
+                type: array
+                description: Array of Array of Array of numbers.
+          properties:
+            type: object
+            required:
+              - cellLength
+              - nrow
+              - ncolumn
+            properties:
+              cellLength:
+                type: number
+              nrow: 
+                type: number
+              ncolumn:
+                type: number
+example:
+  inputs:
+    movingObjects:
+      - Miraikan1
+      - Miraikan2
+    movingSensors:
+      - Miraikan3
+      - Miraikan4
+  output: outputTopic
+  queryId: queryId
+  parameter:
+    sensorRange: 1.0
+    aggregate: SUM
+    window:
+      type: TIME
+      interval: 10
+      step: 10
+    angles: 30
+    grid:
+      type: Feature 
+      geometry:
+        type: Polygon
+        coordinates:
+          - - - -122.308150179
+              - 37.488035566
+            - - -122.597502109
+              - 37.538869539
+            - - -122.576687533
+              - 37.613537207
+            - - -122.2880486
+              - 37.562818007
+            - - -122.308150179
+              - 37.488035566
+      properties:
+        cellLength: 10
+        nrow: 2
+        ncolumn: 3

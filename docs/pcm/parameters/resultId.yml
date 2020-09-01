@@ -1,0 +1,7 @@
+name: resultId
+in: path
+description: The Result Id.
+required: true
+schema:
+  type: string
+  format: uuid

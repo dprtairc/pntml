@@ -1,0 +1,18 @@
+type: object
+description: OAuth Application Information 
+required:
+  - description
+properties:
+  applicationName: 
+    type: string
+    description: "OAuth Application Name"
+    example: Test Application
+  clientId: 
+    type: string
+    description: "Client Id for OAuth Application"
+    example: 00aa00a0-aaa0-000a-0aa0-00aa00000000
+  clientSecret: 
+    type: string
+    description: "Client Secret for OAuth Application"
+    example: 22cc2222-cc22-22cc-22cc-22cc22222222
+

@@ -1,0 +1,6 @@
+name: title
+in: path
+required: true
+description: The title of a dataset given by a user, being unique.
+schema:
+  type: string

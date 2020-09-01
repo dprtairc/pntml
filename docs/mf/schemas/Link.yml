@@ -1,0 +1,22 @@
+type: object
+required:
+  - href
+  - rel
+properties:
+  href:
+    type: string
+    example: https://pntml.io/mf/examples/link
+  rel:
+    type: string
+    example: next
+  type:
+    type: string
+    example: application/json
+  hreflang:
+    type: string
+    example: en
+  title:
+    type: string
+    example: Resource Link
+  length:
+    type: integer

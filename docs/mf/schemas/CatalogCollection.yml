@@ -1,0 +1,13 @@
+type: object
+required:
+  - collections
+  - links
+properties:
+  collections:
+    type: array
+    items:
+      $ref: Catalog.yml
+  links:
+    type: array
+    items:
+      $ref: Link.yml

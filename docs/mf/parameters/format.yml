@@ -1,0 +1,9 @@
+name: format
+in: query
+required: false
+description: the format of output data(prism is default).
+schema:
+  type: string
+  enum:
+    - prism
+    - trajectory

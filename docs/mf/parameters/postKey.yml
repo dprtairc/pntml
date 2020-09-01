@@ -1,0 +1,6 @@
+name: postKey
+in: path
+description: "The Post(Insert) Key"
+required: true
+schema:
+  type: string

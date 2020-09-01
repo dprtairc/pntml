@@ -1,0 +1,11 @@
+type: object
+required:
+  - temporalGeometry
+  - links
+properties:
+  temporalGeometry:
+    $ref: MF-JSON_Prism.schema.json#/definitions/temporalGeometry
+  links:
+    type: array
+    items:
+      $ref: Link.yml

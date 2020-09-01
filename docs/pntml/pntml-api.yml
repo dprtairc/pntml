@@ -1,0 +1,846 @@
+openapi: 3.0.2
+info:
+  title: PnTML Common API
+  description: >-
+    This is the OpenAPI definition of NEDO PnTML API specification.
+  version: 1.0.0
+  contact:
+    name: ARIC Data Platform Research Team
+    url: https://www.airc.aist.go.jp/en/dprt/
+  license:
+    name: Apache License 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://dps.aaic.hpcc.jp:{port}/pntml
+    description: Development server
+    variables:
+      port:
+        enum:
+          - xxxx
+          - xxxx
+        default: "443"
+  - url: https://dpsdev.aaic.hpcc.jp:{port}/pntml
+    description: Test server
+    variables:
+      port:
+        default: "443"
+tags:
+  - name: Authentication
+    description: PnTML Authentication
+  - name: CommonUserAPI
+    description: Common User API
+  - name: AdminUserAPI
+    description: Admin User API
+  - name: AdminGroupAPI
+    description: Admin Group API
+  - name: OAuthApplicationAPI
+    description: OAuth Application API
+  - name: OAuthAuthorizeAPI
+    description: OAuth Authorize API
+paths:
+  /csrf:
+    get:
+      summary: Get token for Cross-site Request Forgery
+      description: |
+        Get token for Cross-site Request Forgery.
+
+        Used before executing POST, PUT, DELETE processing.
+      operationId: getCSRF
+      tags:
+        - Authentication
+      security: []
+      responses:
+        200:
+          description: >-
+            Token for Cross-site Request Forgery
+          headers:
+            Set-Cookie:
+              description: Token for CSRF (Cross-site Request Forgery)
+              schema:
+                type: string
+                example: XSRF-TOKEN=c02253e8-1acf-4af9-8056-ad1599bb3e83; Path=/; HttpOnly
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: c02253e8-1acf-4af9-8056-ad1599bb3e83
+  /login:
+    post:
+      summary: Perform login authentication.
+      description: |
+        Authenticate before using PnTML(Map3D, Moving Feature) Web API.
+
+        If authentication is successful, the login state is entered.
+      operationId: login
+      tags:
+        - Authentication
+      security:
+        - { csrfHeader: [],cookieCSRF: []}
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: schemas/Login.yml
+      responses:
+        200:
+          description: >-
+            Successful login authentication.
+          headers:
+            Set-Cookie:
+              description: Session cookie
+              schema:
+                type: string
+                example: SESSION=OTM3YTA4ZmEtNThlMS00Y2FkLWI5ZDktZGJjYTdmMjliZTBm; Path=/; HttpOnly
+            "\0Set-Cookie":
+              description: Token for CSRF (Cross-site Request Forgery)
+              schema:
+                type: string
+                example: XSRF-TOKEN=c02253e8-1acf-4af9-8056-ad1599bb3e83; Path=/; HttpOnly
+          content:
+            text/plain:
+              schema:
+                type: string
+        401:
+          description: >-
+            Login authentication error.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Get Login Page. (Unused)
+      description: >-
+        Display the authentication page before login. (Unused)
+      operationId: loginPage
+      tags:
+        - Authentication
+      security: []
+      responses:
+        200:
+          description: >-
+            Successful view login page.
+          content:
+            text/html:
+              schema:
+                type: string
+  /logout:
+    post:
+      summary: Perform logout session.
+      description: >-
+        When logout is executed, session information that has been successfully authenticated is deleted from the server.
+      operationId: logout
+      tags:
+        - Authentication
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        200:
+          description: >-
+            Successful logout session.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /user/password:
+    put:
+      summary: Modify user password for users.
+      description: |
+        Modify user password for users.
+
+        Notes on changing password.
+
+        The password encryption strength is a completely random character string of 100 bits or more.
+
+        Use the following tools.
+        * /dev/urandom
+        * wolfram
+        * https://make-password.dev.cpsec.aist.go.jp/
+
+        Check the following rules for the password to be changed.
+
+        * Password must be at least 16 characters.
+        * It must be composed of 3 or more of 4 types of uppercase letters, lowercase letters, numbers, and symbols.
+        * Do not make the same character type a string of 4 or more consecutive characters.
+
+        * Different from login ID.
+        * Different from current password.
+
+        If the rule is not followed, "Bad Request" is displayed.
+
+      operationId: modifyPassword
+      tags:
+        - CommonUserAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/ModifyPassword.yml
+      responses:
+        202:
+          description: >-
+            Successful modify user password.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot modify user password for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /user/users:
+    post:
+      summary: Add new user.
+      description: >-
+        Add new user.
+      operationId: addUser
+      tags:
+        - AdminUserAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/UserAccount.yml
+      responses:
+        201:
+          description: >-
+            Successful add new user.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot add new user for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Returns a list of users.
+      description: >-
+        Returns a list of users.
+      operationId: getUsers
+      tags:
+        - AdminUserAPI
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: >-
+            List of users.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Users.yml
+        403:
+          description: >-
+            (Forbidden) Cannot get list of users for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /user/users/{userId}:
+    parameters:
+      - $ref: parameters/UserId.yml
+    delete:
+      summary: Delete user account.
+      description: >-
+        Delete user account.
+      operationId: deleteUser
+      tags:
+        - AdminUserAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      responses:
+        202:
+          description: >-
+            Accepted a delete request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot delete user for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: >-
+            User account was not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses user account information.
+      description: >-
+        Accesses user account information.
+      operationId: getUser
+      tags:
+        - AdminUserAPI
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: >-
+            Successful accesses user account information.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/UserInformation.yml
+        403:
+          description: >-
+            (Forbidden) Cannot get user information for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: >-
+            User account was not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    put:
+      summary: Modify user account
+      description: >-
+        Modify user account.
+      operationId: modifyUser
+      tags:
+        - AdminUserAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/ModifyUserAccount.yml
+      responses:
+        202:
+          description: >-
+            Accepted a modify request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot modify user for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /user/users/{userId}/password:
+    parameters:
+      - $ref: parameters/UserId.yml
+    put:
+      summary: Modify user password
+      description: |
+        Modify user password for admin.
+
+        Notes on changing password.
+
+        The password encryption strength is a completely random character string of 100 bits or more.
+
+        Use the following tools.
+        * /dev/urandom
+        * wolfram
+        * https://make-password.dev.cpsec.aist.go.jp/
+
+        Check the following rules for the password to be changed.
+
+        * Password must be at least 16 characters.
+        * It must be composed of 3 or more of 4 types of uppercase letters, lowercase letters, numbers, and symbols.
+        * Do not make the same character type a string of 4 or more consecutive characters.
+
+        * Different from login ID.
+        * Different from current password.
+
+        If the rule is not followed, "Bad Request" is displayed.
+
+      operationId: modifyPasswordForAdmin
+      tags:
+        - AdminUserAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/ModifyPasswordForAdmin.yml
+      responses:
+        202:
+          description: >-
+            Accepted a modify request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot modify user password for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /user/users/{userId}/lock:
+    parameters:
+      - $ref: parameters/UserId.yml
+    put:
+      summary: Lock user account. (Unconfirmed, Unverified)
+      description: |
+        Lock user account.
+        (Unconfirmed, Unverified as additional settings are required)
+      operationId: lock
+      tags:
+        - AdminUserAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        202:
+          description: >-
+            Accepted a a modify request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot lock user for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /group/groups:
+    post:
+      summary: Add new group.
+      description: >-
+        Add new group.
+      operationId: addGroup
+      tags:
+        - AdminGroupAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/GroupInformation.yml
+      responses:
+        201:
+          description: >-
+            Successful add new group.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot add new group for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Returns a list of groups.
+      description: >-
+        Returns a list of groups.
+      operationId: getGroups
+      tags:
+        - AdminGroupAPI
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: >-
+            List of groups.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Groups.yml
+        403:
+          description: >-
+            (Forbidden) Cannot get list of groups for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /group/groups/{groupId}:
+    parameters:
+      - $ref: parameters/GroupId.yml
+    delete:
+      summary: Delete group.
+      description: >-
+        Delete group.
+      operationId: deleteGroup
+      tags:
+        - AdminGroupAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      responses:
+        202:
+          description: >-
+            Accepted a delete request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot delete group for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: >-
+            Group was not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses group information.
+      description: >-
+        Accesses group information.
+      operationId: getGroup
+      tags:
+        - AdminGroupAPI
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: >-
+            Successful accesses group information.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/GroupInformation.yml
+        403:
+          description: >-
+            (Forbidden) Cannot get group for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: >-
+            Group was not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    put:
+      summary: Modify group information
+      description: >-
+        Modify group information.
+      operationId: modifyGroup
+      tags:
+        - AdminGroupAPI
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/ModifyGroup.yml
+      responses:
+        202:
+          description: >-
+            Accepted a modify request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot modify group information for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /application:
+    post:
+      summary: Add new OAuth Application.
+      description: >-
+        Add new OAuth Application.
+      operationId: addApplication
+      tags:
+        - OAuthApplicationAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/Application.yml
+      responses:
+        201:
+          description: >-
+            Successful add new OAuth Application.
+          content:
+            text/plain:
+              schema:
+                $ref: schemas/ClientApplication.yml
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Returns a list of OAuth Application.
+      description: >-
+        Returns a list of OAuth Application.
+      operationId: getApplications
+      tags:
+        - OAuthApplicationAPI
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: >-
+            List of OAuth Application.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Applications.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /application/{clientId}:
+    parameters:
+      - $ref: parameters/ClientId.yml
+    delete:
+      summary: Delete OAuth Application.
+      description: >-
+        Delete OAuth Application.
+      operationId: deleteApplication
+      tags:
+        - OAuthApplicationAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      responses:
+        202:
+          description: >-
+            Accepted a delete request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: >-
+            OAuth Application was not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses OAuth Application information.
+      description: >-
+        Accesses OAuth Application information.
+      operationId: getApplication
+      tags:
+        - OAuthApplicationAPI
+      security:
+        - cookieAuth: []
+      responses:
+        200:
+          description: >-
+            Successful accesses OAuth Application information.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/ApplicationInformation.yml
+        404:
+          description: >-
+            OAuth Application was not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    put:
+      summary: Modify OAuth Application information
+      description: >-
+        Modify OAuth Application information.
+      operationId: modifyApplication
+      tags:
+        - OAuthApplicationAPI
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/ModifyApplication.yml
+      responses:
+        202:
+          description: >-
+            Accepted a modify request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+  /oauth/authorize:
+    post:
+      summary: Approval (Get Authorization Code) for OAuth Application. (Unused)
+      description: >-
+        Approval (Get Authorization Code) for OAuth Application. (Unused)
+      operationId: approval
+      tags:
+        - OAuthAuthorizeAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [] }
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: schemas/Authorize.yml
+      responses:
+        302:
+          description: >-
+            Successful approval OAuth Application.
+          headers:
+            Location:
+              type: "string"
+              example: "<OAuth Callback URL(ex: http://localhost:8081/callback)>?code=<Authorization Code(ex: eFl2UW)>"
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Get Authorization Code for OAuth Application.
+      description: |
+        Get Authorization Code for OAuth Application.
+
+        Display the authentication page before login.
+      operationId: authorize
+      tags:
+        - OAuthAuthorizeAPI
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: parameters/ClientIdQuery.yml
+        - $ref: parameters/ResponseType.yml
+        - $ref: parameters/Scope.yml
+      responses:
+        200:
+          description: >-
+            Successful view OAuth Application approval page.
+          content:
+            text/html:
+              schema:
+                type: string
+        302:
+          description: >-
+            Successful approval OAuth Application.
+          headers:
+            Location:
+              type: "string"
+              example: "<OAuth Callback URL(ex: http://localhost:8081/callback)>?code=<Authorization Code(ex: eFl2UW)>"
+        default:
+          $ref: schemas/DefaultError.yml
+  /oauth/token:
+    post:
+      summary: Get Access Token for OAuth Application.
+      description: |
+        Get Access Token for OAuth Application.
+
+        ex) Map3D Web API : BearerAuth [authorization: Bearer &lt;Access Token&gt;]
+      operationId: token
+      tags:
+        - OAuthAuthorizeAPI
+      security:
+        - { csrfHeader: [], cookieAuth: [], BasicAuth: [client_id, client_secret] }
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: schemas/AccessToken.yml
+      responses:
+        200:
+          description: >-
+            Successful get Access Token.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/ResultToken.yml
+        default:
+          $ref: schemas/DefaultError.yml
+components:
+  securitySchemes:
+    csrfHeader:
+      type: apiKey
+      in: header
+      name: X-XSRF-TOKEN
+    cookieCSRF:
+      type: apiKey
+      in: cookie
+      name: XSRF-TOKEN
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: "XSRF-TOKEN , SESSION"
+    BasicAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://dps.aaic.hpcc.jp/pntml/oauth/authorize
+          tokenUrl: https://dps.aaic.hpcc.jp/pntml/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            create: Grants create collection operations
+
+

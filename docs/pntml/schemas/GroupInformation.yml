@@ -1,0 +1,21 @@
+type: object
+description: Group information 
+required:
+  - groupId
+  - description
+  - members
+properties:
+  groupId: 
+    type: string
+    description: "Group ID"
+    example: User001
+  description: 
+    type: string
+    description: "Description for Group ID"
+    example: Group ID(DPRT-GROUP001)
+  members:
+    type: array
+    description: "List of Member User ID"
+    items:
+      type: string
+      example: [ MemberUser001, MemberUser002 ]

@@ -1,0 +1,26 @@
+type: object
+required:
+  - href
+  - rel
+properties:
+  href:
+    type: string
+    example: https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan
+  rel:
+    type: string
+    examples: 
+      - self
+      - next
+      - prev
+      - resource
+  type:
+    type: string
+    example: text/csv
+  title:
+    type: string
+    example: Resource Link
+  hreflang:
+    type: string
+    example: en
+  length:
+    type: integer

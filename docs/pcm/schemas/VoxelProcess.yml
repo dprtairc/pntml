@@ -1,0 +1,59 @@
+type: object
+description: This is the description of a voxelization process as a asynchroized process 
+required:
+  - input
+properties:
+  input:
+    type: array
+    description: >
+      A URL list of target datasets for processing. The element MUST be in the format of a URL.
+      Because of the server performance, the maximum size of URLs is 3.
+    items:
+      type: string
+    example: 
+      - https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan/points
+    minItems: 1
+    maxItems: 3
+  filter:
+    type: object
+    description: The spatial and temporal conditions to select data.
+    properties:
+      bbox:
+        $ref: BoundingBox.yml
+      time:
+        $ref: LifeSpan.yml
+  output:
+    type: object
+    description: >
+      The output information.
+    properties:
+      voxel:
+        type: object
+        description: >
+          The information of the voxelized outputs.
+        properties:
+          size: 
+            type: integer
+            description: >
+              The voxel parameter determines the size of sampling points.
+              The unit is cm.
+            minimum: 5
+            maximum: 1000
+            default: 20
+          dim:
+            type: integer
+            description: >
+              The dimension for the voxelization.
+            minimum: 2
+            maximum: 3
+            default: 2
+          distanceMap:
+            type: boolean
+            description: >
+              If "true", a map will be created containing the center coordinates of 
+              each cell and the distance from that center point to the nearest point.
+              If the number of cells or the number of points is large, processing will be stopped due to the server load.
+              If "false", a map will be created containing the center coordinates of 
+              each cell and the Bit value indicating the presence or absence of the point cloud in the cell.
+              The bit value is "1" if there is a point cloud in the cell, and "0" otherwise.
+            default: false

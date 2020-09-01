@@ -1,0 +1,10 @@
+description: Begin and end times of the temporal extent.
+type: array
+minItems: 1
+maxItems: 2
+items:
+  type: string
+  format: date-time
+example:
+  - 2011-11-11T12:22:11Z
+  - 2012-11-24T12:32:43Z

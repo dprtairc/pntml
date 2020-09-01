@@ -1,0 +1,10 @@
+name: title
+in: query
+required: true
+description: the titles of datasets given by a user.
+schema:
+    type: array
+    items: 
+        type: string
+    minItems: 1
+    maxItems: 10

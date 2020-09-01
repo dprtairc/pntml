@@ -1,0 +1,6 @@
+name: groupId
+in: path
+required: true
+description: the Group Id given by a user, being unique.
+schema:
+  type: string

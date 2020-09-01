@@ -1,0 +1,6 @@
+name: scope
+in: query
+description: The Scope for OAuth Application.
+required: true
+schema:
+  type: string

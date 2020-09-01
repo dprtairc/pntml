@@ -1,0 +1,6 @@
+name: featureKey
+in: path
+description: "the Key of data"
+required: true
+schema:
+  type: string

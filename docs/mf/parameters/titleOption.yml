@@ -1,0 +1,6 @@
+name: title
+in: query
+required: true
+description: the title of a dataset given by a user, being unique.
+schema:
+  type: string

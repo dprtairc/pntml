@@ -1,0 +1,35 @@
+type: object
+description: User account information 
+required:
+  - userId
+  - commonName
+  - surName
+  - role
+properties:
+  userId: 
+    type: string
+    description: "User Account ID"
+    example: User001
+  commonName: 
+    type: string
+    description: "Common Name for User Account"
+    example: CommonName(SurName User001)
+  surName: 
+    type: string
+    description: "Sur Name for User Account"
+    example: SurName
+  role:
+    type: string
+    description: "Role for User Account"
+    enum:
+      - ADMINS
+      - CREATORS
+      - WRITERS
+      - USERS
+    example: CREATORS
+  groups:
+    type: array
+    description: "Group for User Account"
+    items:
+      type: string
+      example: [ Group001, Group002 ]

@@ -1,0 +1,58 @@
+type: object
+required:
+  - type
+  - id
+  - bbox
+  - time
+  - geometry
+  - properties
+properties:
+  type:
+    type: string
+    enum:
+      - Feature
+  id:
+    oneOf:
+      - type: string
+      - type: integer
+    nullable: false
+  geometry:
+    $ref: 'MF-JSON_Prism.schema.json#/definitions/geometry'
+    nullable: true
+  properties:
+    type: object
+    nullable: true
+  bbox:
+    $ref: 'MF-JSON_Prism.schema.json#/definitions/bbox'
+  time:
+    $ref: 'MF-JSON_Prism.schema.json#/definitions/time'
+  links:
+    type: array
+    items:
+      $ref: Link.yml
+example:
+  type: Feature
+  id: feature-000001
+  bbox:
+    - -122.59750209
+    - 37.48803556
+    - -122.2880486
+    - 37.613537207
+  time:
+    - 2011-07-14T22:01:01Z
+    - 2011-07-15T01:11:22Z
+  geometry:
+    type: Polygon
+    coordinates:
+      - - - -122.308150179
+          - 37.488035566
+        - - -122.597502109
+          - 37.538869539
+        - - -122.576687533
+          - 37.613537207
+        - - -122.2880486
+          - 37.562818007
+        - - -122.308150179
+          - 37.488035566
+  properties:
+    label: car

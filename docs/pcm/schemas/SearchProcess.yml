@@ -1,0 +1,32 @@
+type: object
+description: This is the description of a search process as a asynchroized process 
+required:
+  - input
+properties:
+  input:
+    type: array
+    description: >
+      A URL list of target datasets for processing.
+      The element MUST be in the format of a URL.
+      Because of the server performance, the maximum size of URLs is 3.
+    items:
+      type: string
+    example: 
+      - https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan/points
+    minItems: 1
+    maxItems: 3
+  filter:
+    $ref: Filter.yml
+  output:
+    type: object
+    description: >
+      The information for output type.
+    properties:
+      type:
+        type: string
+        description: File format for download.
+        enum:
+          - las
+          - csv
+          - pcd
+          - ply
