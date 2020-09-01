@@ -19,6 +19,7 @@ jobs:
       - run: npm install -g redoc
       - run: npm install -g redoc-cli
 
+## For mkdocs
 #      - name: Setup Python
 #        uses: actions/setup-python@v2
 #        with:
