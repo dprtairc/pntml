@@ -672,13 +672,13 @@ paths:
           description: There is no result with the specified id.
         default:
           $ref: schemas/DefaultError.yml
-  /processes/continous:
+  /processes/continuous:
     post:
       summary: Creates a new aggregation process to calculate the staying time or the number of moving features and executes it CONTINUOUSLY.
       description: >-
           A user can continuously calculate the staying time of moving features with a aggregation (ex., sum, min, max, avg) function and spatio-temporal conditions.
           This method should be implemented using Apache Kafka.
-      operationId: continousStayProcess
+      operationId: continuousStayProcess
       tags:
         - Processes
       requestBody:
@@ -696,11 +696,11 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/mf/processes/train/gridmodel/T0000000001
+                  href: https://dps.aaic.hpcc.jp/mf/processes/continuous/T0000000001
                   type: application/geo+json
                 jobs:
-                  - name: Train
-                    id: T0000000001
+                  - name: Continuous
+                    id: C0000000001
         default:
           $ref: schemas/DefaultError.yml
   /jobs/{jobId}:
