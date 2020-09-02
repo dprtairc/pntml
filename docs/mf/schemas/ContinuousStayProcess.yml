@@ -9,15 +9,16 @@ properties:
   inputs:
     type: object
     description: >
-      two list of Kafka topics for processing: moving objects and moving sensors.
-      Each array can take one or more Kafka input topics.
-      Because of the server performance, the maximum size of topics is 5.
+      An object containing one or two arrays of string, corresponding to the Kafka input topic names.
+      The first array corresponds to the moving objects, whereas the second array corresponds to the moving sensors.
+      Each array can take one or more Kafka input topics (max. 5 topics per array).
+      If the second array is not provided, the empty cells in the output are ignored.
     properties:
       movingObjects:
         type: array
         items:
           description: >
-            Kafka input topics
+            Kafka input topics corresponds to the moving objects
           type: string
           minItems: 1
           maxItems: 5
@@ -25,22 +26,22 @@ properties:
         type: array
         items:
           description: >
-            Kafka input topics
+            Kafka input topics corresponds to the moving sensors
           type: string
           minItems: 1
           maxItems: 5
   output:
     type: string
     description: >
-      Kafka output topic name
+      The kafka topic name which will contain the query output/result
   queryId:
     type: string
     description: >
-      user specified query ID
+      User specified query ID to identify the query output in kafka topic
   parameter:
     type: object
     description: >
-      parameter for learning a model
+      Query parameters
     required:
       - aggregate
       - window
@@ -49,8 +50,17 @@ properties:
     properties:
       sensorRange:
         description: >
+          Sensor visibility range in meters (required if the input “sensorTopics” is provided)
         type: number
       aggregate:
+        description: >
+          "AVG": Returns Average stay time of moving objects
+
+          "MIN": Returns the object with the Minimum stay time
+
+          "MAX": Returns the object with the Maximum stay time
+
+          ”SUM”: Returns the total stay time of all the objects
         type: string
         enum:
           - SUM
@@ -59,25 +69,30 @@ properties:
           - MAX
       window:
         type: object
-        description: >
-          a time interval to create a grid snapshot (min)
         required:
           - interval
           - step
         properties:
           type:
+            description: >
+              Window type: “TIME” “COUNT” (By default it is “TIME”)
             type: string
             enum:
               - TIME
               - COUNT
           interval:
+            description: >
+              Window size in seconds (number of elements) for TIME (COUNT) window
             type: number
           step:
+            description: >
+              Window sliding step in seconds (number of elements) for TIME (COUNT) window.
+              If interval > step, the window is sliding window otherwise tumbling.
             type: number
       angle:
         type: number
         description: >
-          bearing of map(degrees).
+          Bearing of the Grid in degrees.
           Absolute bearing refers to the angle between true North and map Plane
           (Plane of Longitude Latitude).
       grid:
@@ -92,6 +107,7 @@ properties:
             enum: 
               - Feature
           geometry:
+            description: Grid geometry
             type: object
             required:
               - type
@@ -100,11 +116,16 @@ properties:
               type: 
                 type: string
                 enum: 
-                  - Polygon
+                  - Point
               coordinates:
+                description: >
+                  The coordinate corresponding to the starting point of the Grid.
+                  The coordinate should correspond to a Point in terms of longitude and latitude
                 type: array
-                description: Array of Array of Array of numbers.
+                minItems: 2
+                maxItems: 2
           properties:
+            description: Grid properties
             type: object
             required:
               - cellLength
@@ -112,10 +133,13 @@ properties:
               - ncolumn
             properties:
               cellLength:
+                description: Grid cell length in meters
                 type: number
-              nrow: 
+              nrow:
+                description: Number of rows in the grid
                 type: number
               ncolumn:
+                description: Number of columns in the grid
                 type: number
 example:
   inputs:
@@ -126,31 +150,23 @@ example:
       - Miraikan3
       - Miraikan4
   output: outputTopic
-  queryId: queryId
+  queryId: Q1
   parameter:
-    sensorRange: 1.0
+    sensorRange: 0.0005
     aggregate: SUM
     window:
       type: TIME
       interval: 10
       step: 10
-    angles: 30
+    angles: 45
     grid:
       type: Feature 
       geometry:
         type: Polygon
         coordinates:
-          - - - -122.308150179
-              - 37.488035566
-            - - -122.597502109
-              - 37.538869539
-            - - -122.576687533
-              - 37.613537207
-            - - -122.2880486
-              - 37.562818007
-            - - -122.308150179
-              - 37.488035566
+          - 139.77666
+          - 35.61908
       properties:
-        cellLength: 10
-        nrow: 2
-        ncolumn: 3
+        cellLength: 2
+        nrow: 35
+        ncolumn: 20
