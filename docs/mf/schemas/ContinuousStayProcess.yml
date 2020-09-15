@@ -162,7 +162,7 @@ example:
     grid:
       type: Feature 
       geometry:
-        type: Polygon
+        type: Point
         coordinates:
           - 139.77666
           - 35.61908
