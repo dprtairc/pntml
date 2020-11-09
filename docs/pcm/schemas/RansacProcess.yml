@@ -1,0 +1,86 @@
+type: object
+description: This is the description of a Ransac process as a asynchroized process 
+required:
+  - input
+properties:
+  input:
+    type: array
+    description: >
+      A URL list of target datasets for processing. The element MUST be in the format of a URL.
+      Because of the server performance, the maximum size of URLs is 3.
+    items:
+      type: string
+    example: 
+      - https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan/points
+    minItems: 1
+    maxItems: 3
+  filter:
+    type: object
+    description: The spatial and temporal conditions to select data.
+    properties:
+      bbox:
+        $ref: BoundingBox.yml
+      time:
+        $ref: LifeSpan.yml
+  output:
+    type: object
+    description: >
+      The output information.
+    properties:
+      voxel:
+        type: object
+        description: >
+          The information of the voxelized outputs.
+        properties:
+          size: 
+            type: integer
+            description: >
+              The voxel parameter determines the size of sampling points.
+              The unit is cm.
+            minimum: 5
+            maximum: 1000
+            default: 20
+      ransac:
+        type: object
+        description: >
+          The information of the voxelized outputs.
+        properties:
+          threshold:
+            type: double
+            description: >
+              Value to determine data points that are fit well by model.
+              The default value is calculated automatically.
+              The unit is cm.
+            minimum: 0.01
+            maximum: 9999
+            default: 
+          duplicate:
+            type: boolean
+            description: >
+              Determine if you belong to a face at every point.
+            default: false
+          tiling:
+            type: double
+            description: >
+              Width when dividing into groups.
+              The unit is cm.
+            minimum: 10000.0
+            maximum: 999999.0
+            default: 20000.0
+          plane:
+            type: object
+            description: >
+              The information of the plane by ransac.
+            properties:
+              count:
+                type: integer
+                description: >
+                  Number of planes to be sought.
+                minimum: 2
+                maximum: 9999
+                default: 1
+              orderbySlope:
+                type: boolean
+                description: >
+                  Whether to prioritize the vertical surface.
+                default: false
