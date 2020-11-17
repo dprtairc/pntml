@@ -4,24 +4,32 @@ properties:
   writeUsers:
     type: array
     description: "List of User ID who have write permission."
+    items:
+      type: string
     example:
       - MemberUser001
       - MemberUser002
   writeGroups:
     type: array
     description: "List of Group ID who have write permission."
+    items:
+      type: string
     example:
       - MemberGroup001
       - MemberGroup002
   readUsers:
     type: array
     description: "List of User ID who have read permission."
+    items:
+      type: string
     example:
       - MemberUser003
       - MemberUser004
   readGroups:
     type: array
     description: "List of Group ID who have read permission."
+    items:
+      type: string
     example:
       - MemberGroup003
       - MemberGroup004

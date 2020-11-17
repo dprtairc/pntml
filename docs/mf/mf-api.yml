@@ -3,7 +3,6 @@ info:
   title: PnTML Moving Features API
   description: >-
     This is the OpenAPI definition of Moving Features API specification that conforms to the OGC Moving Features Encoding Extension - JSON.
-    xxxxx.
   version: 1.0.0
   contact:
     name: ARIC Data Platform Research Team

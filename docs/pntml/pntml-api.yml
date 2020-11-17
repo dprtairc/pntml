@@ -17,7 +17,6 @@ servers:
       port:
         enum:
           - xxxx
-          - xxxx
         default: "443"
   - url: https://dpsdev.aaic.hpcc.jp:{port}/pntml
     description: Test server
@@ -749,8 +748,9 @@ paths:
             Successful approval OAuth Application.
           headers:
             Location:
-              type: "string"
-              example: "<OAuth Callback URL(ex: http://localhost:8081/callback)>?code=<Authorization Code(ex: eFl2UW)>"
+              schema:
+                type: string
+                example: "<OAuth Callback URL(ex: http://localhost:8081/callback)>?code=<Authorization Code(ex: eFl2UW)>"
         default:
           $ref: schemas/DefaultError.yml
     get:
@@ -781,8 +781,9 @@ paths:
             Successful approval OAuth Application.
           headers:
             Location:
-              type: "string"
-              example: "<OAuth Callback URL(ex: http://localhost:8081/callback)>?code=<Authorization Code(ex: eFl2UW)>"
+              schema:
+                type: string
+                example: "<OAuth Callback URL(ex: http://localhost:8081/callback)>?code=<Authorization Code(ex: eFl2UW)>"
         default:
           $ref: schemas/DefaultError.yml
   /oauth/token:
