@@ -13,11 +13,16 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
         with:
           node-version: '12'
       - run: npm install -g redoc
       - run: npm install -g redoc-cli
+      - run: redoc-cli bundle -o ./public/mf-api.html ./docs/mf/mf-api.yml
+      - run: redoc-cli bundle -o ./public/pcm-api.html ./docs/pcm/pcm-api.yml
+      - run: redoc-cli bundle -o ./public/pntml-api.html ./docs/pntml-open/pntml-api.yml
 
 ## For mkdocs
 #      - name: Setup Python
@@ -44,10 +49,6 @@ jobs:
 
 #     - name: Install dependencies
 #        run: python3 -m pip install -r ./requirements.txt
-
-      - run: redoc-cli bundle -o ./public/mf-api.html ./docs/mf/mf-api.yml
-      - run: redoc-cli bundle -o ./public/pcm-api.html ./docs/pcm/pcm-api.yml
-      - run: redoc-cli bundle -o ./public/pntml-api.html ./docs/pntml-open/pntml-api.yml
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

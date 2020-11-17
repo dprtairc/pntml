@@ -46,7 +46,7 @@ properties:
           The information of the voxelized outputs.
         properties:
           threshold:
-            type: double
+            type: number
             description: >
               Value to determine data points that are fit well by model.
               The default value is calculated automatically.
@@ -60,7 +60,7 @@ properties:
               Determine if you belong to a face at every point.
             default: false
           tiling:
-            type: double
+            type: number
             description: >
               Width when dividing into groups.
               The unit is cm.
