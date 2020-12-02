@@ -1,0 +1,38 @@
+type: object
+description: This is the description of a SetOperator process as a asynchroized process 
+required:
+  - type
+  - input
+properties:
+  type:
+    type: string
+    description: Specify the point cloud and the operation of the point cloud.
+    example: "intersection"
+    enum:
+      - intersection
+      - union
+      - difference
+  input:
+    type: array
+    description: >
+      A URL list of target datasets for processing. The element MUST be in the format of a URL.
+      The URL size is always 2.
+    items:
+      type: string
+    example: 
+      - https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan/points
+      - https://dps.aaic.hpcc.jp/map3d/pcms/processes/search/17171930-cc56-4dd6-8b0c-7d41700f7ac6
+    minItems: 2
+    maxItems: 2
+  filter:
+    type: object
+    description: The spatial and temporal conditions to select data.
+    properties:
+      bbox:
+        $ref: BoundingBox.yml
+      time:
+        $ref: LifeSpan.yml
+      frequency:
+        $ref: Frequency.yml
+  output:
+    $ref: output.yml

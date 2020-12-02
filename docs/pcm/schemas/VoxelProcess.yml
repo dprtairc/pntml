@@ -22,38 +22,36 @@ properties:
         $ref: BoundingBox.yml
       time:
         $ref: LifeSpan.yml
-  output:
+      frequency:
+        $ref: Frequency.yml
+  parameter:
     type: object
-    description: >
-      The output information.
+    description: Parameters required for voxelization.
     properties:
-      voxel:
-        type: object
+      size: 
+        type: integer
         description: >
-          The information of the voxelized outputs.
-        properties:
-          size: 
-            type: integer
-            description: >
-              The voxel parameter determines the size of sampling points.
-              The unit is cm.
-            minimum: 5
-            maximum: 1000
-            default: 20
-          dim:
-            type: integer
-            description: >
-              The dimension for the voxelization.
-            minimum: 2
-            maximum: 3
-            default: 2
-          distanceMap:
-            type: boolean
-            description: >
-              If "true", a map will be created containing the center coordinates of 
-              each cell and the distance from that center point to the nearest point.
-              If the number of cells or the number of points is large, processing will be stopped due to the server load.
-              If "false", a map will be created containing the center coordinates of 
-              each cell and the Bit value indicating the presence or absence of the point cloud in the cell.
-              The bit value is "1" if there is a point cloud in the cell, and "0" otherwise.
-            default: false
+          The voxel parameter determines the size of sampling points.
+          The unit is cm.
+        minimum: 5
+        maximum: 1000
+        default: 20
+      dim:
+        type: integer
+        description: >
+          The dimension for the voxelization.
+        minimum: 2
+        maximum: 3
+        default: 2
+      distanceMap:
+        type: boolean
+        description: >
+          If "true", a map will be created containing the center coordinates of 
+          each cell and the distance from that center point to the nearest point.
+          If the number of cells or the number of points is large, processing will be stopped due to the server load.
+          If "false", a map will be created containing the center coordinates of 
+          each cell and the Bit value indicating the presence or absence of the point cloud in the cell.
+          The bit value is "1" if there is a point cloud in the cell, and "0" otherwise.
+        default: false
+  output:
+    $ref: output.yml

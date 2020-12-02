@@ -371,6 +371,66 @@ paths:
           description: There is no result with the specified id.
         default:
           $ref: schemas/DefaultError.yml
+  /processes/setop:
+    post:
+      summary: Create a new process in the point cloud and the operation result of the point cloud and execute it asynchronously.
+      description: >-
+        A user uses the filter condition to get the join, difference, and common points of the two point cloud data.
+          The output file format is CSV only.
+          The coordinate system of the result data is the WGS84 UTM coordinate system.
+          (EPSG: 32601-32660, 32701-32760)
+          EPSG code is determined from the coordinate value of the point cloud to be searched.
+          If the point cloud to be searched spans multiple EPSG codes, processing will stop.
+          This method is mandatory.
+      operationId: setopProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/SetopProcess.yml
+      responses:
+        202:
+          description: Accepted a setop process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: results
+                  href: https://dps.aaic.hpcc.jp/map3d/pcms/processes/setop/17171930-cc56-4dd6-8b0c-7d41700f7ac6
+                  type: text/csv
+                jobs:
+                  - name: Setop
+                    id: 17171930-cc56-4dd6-8b0c-7d41700f7ac6
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/setop/{resultId}:
+    get:
+      summary: Obtains setop results with the result id.
+      description: >-
+        A user can obtain the setop result via this method.
+      operationId: getSetopResults
+      tags:
+        - Processes
+      parameters:
+        - $ref: parameters/resultId.yml
+      responses:
+        200:
+          description: return a zip file containing point cloud data
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        204:
+          description: The result is expired.
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
   /jobs/{jobId}:
     parameters:
       - $ref: parameters/job.yml

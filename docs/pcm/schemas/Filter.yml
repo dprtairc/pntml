@@ -45,3 +45,5 @@ properties:
       type: string
     example:
       - "お台場"
+  frequency:
+    $ref: Frequency.yml
