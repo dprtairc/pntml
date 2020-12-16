@@ -4,10 +4,12 @@ description: >
 properties:
   type:
     type: string
-    description: File format for download.
-      Currently only csv, but there are plans to be able to specify (ply, pcd) in the future
+    description: The file in the specified format is compressed into a ZIP file and downloaded.
     enum:
+      - las
       - csv
+      - pcd
+      - ply
     default: csv
   crs:
     type: string

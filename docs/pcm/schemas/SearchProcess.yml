@@ -18,26 +18,4 @@ properties:
   filter:
     $ref: Filter.yml
   output:
-    type: object
-    description: >
-      The output information.
-    properties:
-      type:
-        type: string
-        description: File format for download.
-        enum:
-          - las
-          - csv
-          - pcd
-          - ply
-        default: csv
-      crs:
-        type: string
-        description: Convert coordinates with the specified EPSG code and output to a file.
-        example: "http://www.opengis.net/def/crs/EPSG/0/6677"
-        default: 
-      reuse:
-        type: boolean
-        description: >
-          Set true if you want to reuse the output result.
-        default: false
+    $ref: output.yml

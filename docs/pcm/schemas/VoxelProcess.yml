@@ -54,4 +54,24 @@ properties:
           The bit value is "1" if there is a point cloud in the cell, and "0" otherwise.
         default: false
   output:
-    $ref: output.yml
+    type: object
+    description: >
+      The output information.
+    properties:
+      type:
+        type: string
+        description: The file in the specified format is compressed into a ZIP file and downloaded.(Only support csv and ply)
+        enum:
+          - csv
+          - ply
+        default: csv
+      crs:
+        type: string
+        description: Convert coordinates with the specified EPSG code and output to a file.
+        example: "http://www.opengis.net/def/crs/EPSG/0/6677"
+        default: 
+      reuse:
+        type: boolean
+        description: >
+          Set true if you want to reuse the output result.
+        default: false
