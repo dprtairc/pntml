@@ -18,15 +18,4 @@ properties:
   filter:
     $ref: Filter.yml
   output:
-    type: object
-    description: >
-      The information for output type.
-    properties:
-      type:
-        type: string
-        description: File format for download.
-        enum:
-          - las
-          - csv
-          - pcd
-          - ply
+    $ref: output.yml

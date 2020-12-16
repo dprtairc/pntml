@@ -1,0 +1,18 @@
+description: |-
+  Specifying the filtering method of moving objects.
+type: object
+properties:
+  mode:
+    type: string
+    description: >
+      Set the mode to decide the number of frequency.
+    enum:
+      - invalid
+      - manual
+      - auto
+    default: invalid
+  count:
+    type: integer
+    description: >
+      Exclude detected points less than the specified number of times. This is only enabled when "mode" is "manual".
+    default: 0
