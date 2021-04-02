@@ -3,6 +3,7 @@ info:
   title: PnTML 3DMap API
   description: >-
     This is the OpenAPI definition of NEDO 3DMap API specification.
+    xxxxxx.
   version: 1.0.0
   contact:
     name: ARIC Data Platform Research Team
@@ -28,8 +29,10 @@ tags:
     description: 3D Point Cloud Maps
   - name: PointClouds
     description: 3D Point Cloud Data
-  #- name: MeshMaps
-  #  description: 3D Mesh Maps
+  - name: MeshMaps
+    description: 3D Mesh Maps
+  - name: Meshes
+    description: 3D Mesh Data
   - name: Processes
     description: Asynchronized Operations (search, voxelize, ...) about 3D Maps
   - name: Jobs
@@ -196,11 +199,168 @@ paths:
           description: A PCM with the specified name was not found.
         default:
           $ref: schemas/DefaultError.yml
+  /mms:
+    post:
+      summary: Registers metadata about a Mesh Map to manage mesh data.
+      description: >-
+        A user SHOULD register metadata about a MM
+        before uploading a set of mesh files. 
+        This method is mandatory to be implemented.
+      operationId: registerMeshMetadata
+      tags:
+        - MeshMaps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/MMDescription.yml
+      responses:
+        201:
+          description: >- 
+            Successful Create a MM to manage a set of mesh. 
+            You can upload mesh data by using URL.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Links.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/map3d/mms/Miraikan
+                    rel: self
+                    title: Miraikan
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Retrieves catalogs of Mesh Maps.
+      description: >-
+        A user can retrieve catalogs to access MMs by simple filtering and a limit.
+        This method is mandatory to be implemented.
+      operationId: searchMeshCatalog
+      tags:
+        - MeshMaps
+      parameters:
+        - $ref: parameters/bboxOption.yml
+        - $ref: parameters/timeOption.yml
+        - $ref: parameters/tagOption.yml
+        - $ref: parameters/limit.yml
+      responses:
+        200:
+          description: A collection of MM catalogs.
+          content:
+            application/geo+json:
+              schema:
+                $ref: schemas/CatalogCollection.yml
+              example:
+                $ref: examples/mmCatalogCollection.yml
+        default:
+          $ref: schemas/DefaultError.yml
+  /mms/{title}:
+    post:
+      summary: Uploads a set of mesh files and Stores them into the MM
+      description: >-
+        A user uploads a set of messh files into a specific MM
+        This method is mandatory to be implemented.
+      operationId: uploadMeshes
+      tags:
+        - Meshes
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MeshFiles'
+      responses:
+        202:
+          description: Accepted storing
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                links:
+                  - href: https://dps.aaic.hpcc.jp/map3d/mms/Miraikan/meshes
+                    rel: self
+                    type: text/csv
+                jobs:
+                  - name: File1
+                    id: 06f11bfa-9fa9-452d-b9a8-249d6aee9d4f
+        default:
+          $ref: schemas/DefaultError.yml
+    get:
+      summary: Accesses metadata about the MM with the specified name.
+      description: >-
+        A user can access metadata that the user defined for the registration.
+        This method is mandatory to be implemented.
+      operationId: accessMeshMetadata
+      tags:
+        - Meshes
+      responses:
+        200:
+          description: the metadata being returned
+          content:
+            application/json:
+              schema:
+                $ref: schemas/MMDescription.yml
+        404:
+          description: A MM with the specified name was not found.
+    parameters:
+      - $ref: parameters/title.yml
+    delete:
+      summary: Deletes a MM including metadata and mesh data.
+      tags:
+        - Meshes
+      description: >-
+        Only an authorized user can delete a MM.
+        The MM catalog should be deleted.
+        Before finishing the job, a user cannot use the same title to create a MM.
+        This method is optional to be implemented.
+      operationId: deleteMMAll
+      responses:
+        202:
+          description: Accepted a delete request.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/Job.yml
+        404:
+          description: A MM with the specified name was not found.
+        default:
+          $ref: schemas/DefaultError.yml
+  /mms/{title}/meshes:
+    parameters:
+      - $ref: parameters/title.yml
+    get:
+      summary: Retrieves mesh data from the MM with the specified name.
+      description: >-
+        A user can retrieve mesh data from the MM with conditions,
+        such as a bouding box, a time period, and the size of sampling.
+        It returns only 3D sampling points excluding other attributes.
+      operationId: retrieveMeshes
+      tags:
+        - Meshes
+      parameters:
+        - $ref: parameters/bbox.yml
+        - $ref: parameters/time2.yml
+        # - $ref: parameters/outputType.yml
+        - $ref: parameters/crs.yml
+      responses:
+        200:
+          description: return a zip file containing mesh data
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        204:
+          description: No mesh data.
+        404:
+          description: A MM with the specified name was not found.
+        default:
+          $ref: schemas/DefaultError.yml
   /processes/search:
     post:
       summary: Creates a new search process with conditions and executes it ASYNCHRONOUSLY
       description: >-
-        A user can search point cloud data with more complex conditions asynchronously.
+        A user can search point cloud data with more complex conditions asynchonously.
         This method is mandatory to be implemented.
       operationId: searchProcess
       tags:
@@ -220,11 +380,11 @@ paths:
               example:
                 link:
                   title: 943bb0eb-8609-4d28-a147-d54b9816b69e
-                  href: https://dps.aaic.hpcc.jp/map3d/pcms/processes/search/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.aaic.hpcc.jp/map3d/processes/search/943bb0eb-8609-4d28-a147-d54b9816b69e
                   type: text/csv
                 jobs:
                   - name: Search
-                    id: 06f11bfa-9fa9-452d-b9a8-249d6aee9d4f
+                    id: 943bb0eb-8609-4d28-a147-d54b9816b69e
         default:
           $ref: schemas/DefaultError.yml
   /processes/search/{resultId}:
@@ -255,7 +415,7 @@ paths:
     post:
       summary: Creates a new process of voxelization with conditions and executes it ASYNCHRONOUSLY
       description: >-
-        A user can calculate voxelized point cloud data with filtering conditions asynchronously.
+        A user can calculate voxelized point cloud data with filtering conditions asynchonously.
         The output file format is CSV only.
         The coordinate system of the result data is the UTM coordinate system of WGS84. 
         (EPSG:32601-32660,32701-32760)
@@ -280,11 +440,11 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/map3d/pcms/processes/voxelize/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.aaic.hpcc.jp/map3d/processes/voxelize/943bb0eb-8609-4d28-a147-d54b9816b69e
                   type: text/csv
                 jobs:
                   - name: Voxelize
-                    id: 06f11bfa-9fa9-452d-b9a8-249d6aee9d4f
+                    id: 943bb0eb-8609-4d28-a147-d54b9816b69e
         default:
           $ref: schemas/DefaultError.yml
   /processes/voxelize/{resultId}:
@@ -340,7 +500,7 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/map3d/pcms/processes/ransac/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.aaic.hpcc.jp/map3d/processes/ransac/943bb0eb-8609-4d28-a147-d54b9816b69e
                   type: text/csv
                 jobs:
                   - name: Ransac
@@ -400,7 +560,7 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/map3d/pcms/processes/setop/17171930-cc56-4dd6-8b0c-7d41700f7ac6
+                  href: https://dps.aaic.hpcc.jp/map3d/processes/setop/17171930-cc56-4dd6-8b0c-7d41700f7ac6
                   type: text/csv
                 jobs:
                   - name: Setop
@@ -431,16 +591,71 @@ paths:
           description: There is no result with the specified id.
         default:
           $ref: schemas/DefaultError.yml
+  /processes/mesh/search:
+    post:
+      summary: Creates a new mesh search process with conditions and executes it ASYNCHRONOUSLY
+      description: >-
+        A user can search mesh data with more complex conditions asynchonously.
+        This method is mandatory to be implemented.
+      operationId: meshSearchProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/MMSearchProcess.yml
+      responses:
+        202:
+          description: Accepted a search process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: 943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.aaic.hpcc.jp/map3d/processes/mesh/search/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  type: text/csv
+                jobs:
+                  - name: MeshSearch
+                    id: 943bb0eb-8609-4d28-a147-d54b9816b69e
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/mesh/search/{resultId}:
+    parameters:
+      - $ref: parameters/resultId.yml
+    get:
+      summary: Obtatins mesh search results with the result id.
+      description: >-
+        A user can obtain the mesh search result via this method.
+      operationId: getMeshSearchResults
+      tags:
+        - Processes
+      responses:
+        200:
+          description: return a file containing mesh data
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        204:
+          description: No result.
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
   /jobs/{jobId}:
     parameters:
       - $ref: parameters/job.yml
     get:
       summary: "Access the job status of an executing process"
       description: >-
-         A user can access the status of his/her process by using this API.
+         A user can acess the status of his/her process by using this API.
       operationId: "getJobInfo"
       tags:
-        - Jobs
+        - "Jobs"
       responses:
         200:
           description: Returns the job status
@@ -521,12 +736,88 @@ paths:
                 type: string
         default:
           $ref: schemas/DefaultError.yml
+  /user/mms/{title}/permissions:
+    parameters:
+      - $ref: parameters/title.yml
+    get:
+      summary: Accesses permission information from the MM with the specified name.
+      description: |
+        Accesses permission information from the MM with the specified name.
+
+        Permission information is the user name and group name with write permission and read permission.
+      operationId: getMeshPermission
+      tags:
+        - Permissions
+      responses:
+        200:
+          description: >-
+            Successful accesses permission information from the MM with the specified name.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/PermissionInformation.yml
+        403:
+          description: >-
+            (Forbidden) Cannot get permission information for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        404:
+          description: >-
+            Permission information was not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
+    put:
+      summary: Modify permission information from the MM with the specified name.
+      description: |
+        Modify permission information from the MM with the specified name.
+
+        Permission information is the user name and group name with write permission and read permission.
+      operationId: modifyMeshPermissions
+      tags:
+        - Permissions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/PermissionInformation.yml
+      responses:
+        202:
+          description: >-
+            Accepted a modify request.
+          content:
+            text/plain:
+              schema:
+                type: string
+        403:
+          description: >-
+            (Forbidden) Cannot modify permission information for lack of authority.
+          content:
+            text/plain:
+              schema:
+                type: string
+        default:
+          $ref: schemas/DefaultError.yml
 components:
   schemas:
     PointCloudFiles:
       type: object
       properties:
         pointCloudFiles:
+          description: File Name List.
+          type: array
+          items:
+            type: string
+            format: binary
+    MeshFiles:
+      type: object
+      properties:
+        meshFiles:
           description: File Name List.
           type: array
           items:
