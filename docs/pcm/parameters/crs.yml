@@ -1,0 +1,8 @@
+name: crs
+in: query
+description: |
+  Convert coordinates with the specified EPSG code and output to a file.
+required: false
+schema:
+  type: string
+  default: http://www.opengis.net/def/crs/EPSG/0/3095

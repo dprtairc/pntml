@@ -1,0 +1,42 @@
+type: object
+description: This is metadata about a Mesh Map for the registration
+required:
+  - title
+  - inputType
+properties:
+  title:
+    type: string
+    description: >
+      A name given by a user to logically manage a dataset.
+      The user can access his/her a dataset of meshs via this title.
+      The available character is "A-Z","a-z","0-9","-","_".
+      It can't be used a name that has already been registered.
+    example: Miraikan
+  inputType:
+    type: string
+    description: Uploading file format.
+    enum:
+      - obj
+  transformCRS:
+    description: >
+      It denote a Cartesian coordinate reference systems for the transformation.
+      The CRS uses for transforming each point of local engineering CRS into a global geospatial map.
+      Finally, each point can be transformed into WGS84.
+      The default CRS is one of the UTM.
+    type: string
+    example: http://www.opengis.net/def/crs/EPSG/0/3095
+  transform:
+    $ref: Transform.yml
+  gpsTime:
+    description: >
+      This timestamp is used for a mesh which has no explicit GPS timestamp 
+      of the data creation/acquisition.
+    type: string
+    format: date-time
+    example: '2017-08-17T08:05:32Z'
+  tags:
+    $ref: Tags.yml
+  description:
+    type: string
+    description: Any description.
+    example: test mesh map
