@@ -3,7 +3,7 @@ description: This is the description of a Ransac process as a asynchroized proce
 required:
   - input
 properties:
-  input:
+  inputs:
     type: array
     description: >
       A URL list of target datasets for processing. The element MUST be in the format of a URL.
@@ -29,19 +29,19 @@ properties:
     description: Parameters required for ransac.
     properties:
       voxelSize: 
-        type: integer
+        type: double
         description: >
           The voxel parameter determines the size of sampling points.
-          The unit is cm.
-        minimum: 5
-        maximum: 1000
-        default: 20
+          The unit is meter.
+        minimum: 0.01
+        maximum: 10
+        default: 0.2
       threshold:
         type: double
         description: >
           Value to determine data points that are fit well by model.
           The default value is calculated automatically.
-          The unit is cm.
+          The unit is meter.
         minimum: 0.01
         maximum: 9999
         default: 
@@ -54,10 +54,10 @@ properties:
         type: double
         description: >
           Width when dividing into groups.
-          The unit is cm.
+          The unit is meter.
         minimum: 10000.0
         maximum: 999999.0
-        default: 20000.0
+        default: 200.0
       plane:
         type: object
         description: >

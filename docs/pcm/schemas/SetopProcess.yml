@@ -12,7 +12,7 @@ properties:
       - intersection
       - union
       - difference
-  input:
+  inputs:
     type: array
     description: >
       A URL list of target datasets for processing. The element MUST be in the format of a URL.

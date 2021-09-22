@@ -3,7 +3,7 @@ description: This is the description of a search process as a asynchroized proce
 required:
   - input
 properties:
-  input:
+  inputs:
     type: array
     description: >
       A URL list of target datasets for processing.

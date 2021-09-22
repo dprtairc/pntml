@@ -646,6 +646,68 @@ paths:
           description: There is no result with the specified id.
         default:
           $ref: schemas/DefaultError.yml
+  /processes/octomap:
+    post:
+      summary: Create a new process in the point cloud and the operation result of the point cloud and execute it asynchronously.
+      description: >-
+        Use the filter condition to get a gridmap of continuous plane data from the extracted point cloud data.
+        Depending on the parameter, the Euclidean distance of the plane data can be calculated and returned to this gridmap.
+        It is possible to return planar and non-planar data.
+              The output file format is CSV, etc.
+              The coordinate system of the result data is the WGS84UTM coordinate system.
+              (EPSG: 32601-32660, 32701-32760)
+              The EPSG code is determined from the coordinate values of the point cloud to be searched.
+              If the point group you are searching for spans multiple EPSG codes, the process will stop.
+              This method is mandatory.
+      operationId: octomapProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/OctomapProcess.yml
+      responses:
+        202:
+          description: Accepted a octomap process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: results
+                  href: https://dps.aaic.hpcc.jp/map3d/processes/octomap/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  type: text/csv
+                jobs:
+                  - name: Octomap
+                    id: 06f11bfa-9fa9-452d-b9a8-249d6aee9d4f
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/octomap/{resultId}:
+    get:
+      summary: Obtains octomap results with the result id.
+      description: >-
+        A user can obtain the octomap result via this method.
+      operationId: getOctomapResults
+      tags:
+        - Processes
+      parameters:
+        - $ref: parameters/resultId.yml
+      responses:
+        200:
+          description: return a zip file containing point cloud data
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        204:
+          description: The result is expired.
+        404:
+          description: There is no result with the specified id.
+        default:
+          $ref: schemas/DefaultError.yml
   /jobs/{jobId}:
     parameters:
       - $ref: parameters/job.yml

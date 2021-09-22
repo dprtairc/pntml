@@ -3,7 +3,7 @@ description: This is the description of a voxelization process as a asynchroized
 required:
   - input
 properties:
-  input:
+  inputs:
     type: array
     description: >
       A URL list of target datasets for processing. The element MUST be in the format of a URL.
