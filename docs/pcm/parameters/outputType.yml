@@ -1,0 +1,11 @@
+name: crs
+in: query
+description: |
+  The file in the specified format is compressed into a ZIP file and downloaded.
+required: false
+schema:
+  type: string
+  enum:
+    - obj
+style: form
+explode: false

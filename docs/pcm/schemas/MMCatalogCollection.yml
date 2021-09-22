@@ -1,0 +1,13 @@
+type: object
+required:
+  - collections
+  - links
+properties:
+  collections:
+    type: array
+    items:
+      $ref: MMCatalog.yml
+  links:
+    type: array
+    items:
+      $ref: MMLink.yml
