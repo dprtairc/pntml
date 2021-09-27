@@ -1,0 +1,129 @@
+type: object
+description: This is the description of a Octomap process as a asynchroized process 
+required:
+  - input
+properties:
+  inputs:
+    type: array
+    description: >
+      A URL list of target datasets for processing. The element MUST be in the format of a URL.
+      Because of the server performance, the maximum size of URLs is 3.
+    items:
+      type: string
+    example: 
+      - https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan/points
+    minItems: 1
+    maxItems: 3
+  filter:
+    type: object
+    description: The spatial and temporal conditions to select data.
+    properties:
+      bbox:
+        $ref: BoundingBox.yml
+      time:
+        $ref: LifeSpan.yml
+      frequency:
+        $ref: Frequency.yml
+  parameter:
+    type: object
+    required:
+      - voxelSize
+    description: Parameters required for octomap.
+    properties:
+      voxelSize: 
+        type: double
+        description: >
+          The voxel parameter determines the size of sampling points.
+          The unit is Meter.
+        minimum: 0.01
+        maximum: 10 
+      dimension:
+        type: integer
+        description: >
+          The dimension for the voxelization.
+        minimum: 2
+        maximum: 3
+        default: 2
+      distanceMap:
+        type: boolean
+        description: >
+          If distanceMap is true, it calculates and returns the Euclidean distance of the points on the plane. 
+          If distanceMap is false, it does not calculate the Euclidean distance and returns plane and non-planar points. In the result, the data with intensity 1 is a plane point, and the data with intensity 0 is a non-plane point.
+        default: true
+      minDistance:
+        type: double
+        description: >
+          Minimum search distance.
+          Returns the distance result with the minimum search distance even if the distance of the nearest obstacle is less than the minimum search distance.
+          The unit is Meter.
+        minimum: 0
+        maximum: 999999
+        default: 0.5
+      maxDistance:
+        type: double
+        description: >
+          Maximum search distance.
+          Even if there are no obstacles within the maximum search distance, the maximum search distance is returned.
+          The unit is Meter.
+        minimum: 0
+        maximum: 999999
+        default: 5
+      regionGrowing:
+        type: object
+        description: >
+          Setting parameters related to regionGrowing processing.
+        properties:
+          normalRadius:
+            type: double
+            description: >
+              Radius used to obtain normals.
+              The unit is Meter.
+            minimum: 0.01
+            maximum: 999999
+            default: 0.5
+          minClusterSize:
+            type: integer
+            description: >
+              Stores the minimum number of points that a cluster needs to contain in order to be considered valid.
+            minimum: 1
+            maximum: 999999
+            default: 200
+          neighbourNumber:
+            type: integer
+            description: >
+              Number of neighbours to find.
+            minimum: 1
+            maximum: 999999
+            default: 30
+          smoothThreshold:
+            type: double
+            description: >
+              Thershold used for testing the smoothness between points.
+              The unit is degree.
+            minimum: -180
+            maximum: 180
+            default: 1.0
+          curvatureThreshold:
+            type: double
+            description: >
+              Thershold used in curvature test.
+            minimum: 0.01
+            maximum: 999999
+            default: 0.5
+  output:
+    type: object
+    description: >
+      The output information.
+    properties:
+      type:
+        type: string
+        description: The file in the specified format is compressed into a ZIP file and downloaded.
+        enum:
+          - json
+          - csv
+        default: json
+      crs:
+        type: string
+        description: Convert coordinates with the specified EPSG code and output to a file.
+        example: "http://www.opengis.net/def/crs/EPSG/0/6677"
+        default: 
