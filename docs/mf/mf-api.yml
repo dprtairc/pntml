@@ -172,7 +172,7 @@ paths:
         - MovingFeatures
       parameters:
         - $ref: parameters/title.yml
-        - $ref: parameters/time.yml   
+        - $ref: parameters/time.yml
         - $ref: parameters/bbox.yml
         - $ref: parameters/format.yml
       responses:
@@ -408,7 +408,7 @@ paths:
     put:
       summary: Updates static properties of the moving feature whose Key is {featureKey} with a JSON object
       description: >-
-        A user can update static properties of a specified moving feature. 
+        A user can update static properties of a specified moving feature.
         This method is mandatory to be optional.
       operationId: updateProperties
       tags:
@@ -441,7 +441,7 @@ paths:
     put:
       summary: Updates static geometry of the moving feature whose Key is {featureKey} with a GeoJSON object
       description: >-
-        A user can update static geometry of a specified moving feature. 
+        A user can update static geometry of a specified moving feature.
         This method is mandatory to be optional.
       operationId: updateGeometry
       tags:
