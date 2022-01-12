@@ -34,7 +34,7 @@ properties:
         type: double
         description: >
           The voxel parameter determines the size of sampling points.
-          The unit is Meter.
+          The unit is meter.
         minimum: 0.01
         maximum: 10 
       dimension:
