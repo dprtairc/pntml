@@ -29,13 +29,13 @@ properties:
     description: Parameters required for voxelization.
     properties:
       size: 
-        type: integer
+        type: double
         description: >
           The voxel parameter determines the size of sampling points.
-          The unit is cm.
-        minimum: 5
-        maximum: 1000
-        default: 20
+          The unit is meter.
+        minimum: 0.01
+        maximum: 10
+        default: 0.2
       dim:
         type: integer
         description: >
