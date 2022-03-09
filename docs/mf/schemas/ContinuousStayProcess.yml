@@ -7,29 +7,19 @@ required:
   - parameter
 properties:
   inputs:
-    type: object
+    type: array
     description: >
       An object containing one or two arrays of string, corresponding to the Kafka input topic names.
       The first array corresponds to the moving objects, whereas the second array corresponds to the moving sensors.
       Each array can take one or more Kafka input topics (max. 5 topics per array).
       If the second array is not provided, the empty cells in the output are ignored.
     properties:
-      movingObjects:
-        type: array
-        items:
-          description: >
-            Kafka input topics corresponds to the moving objects
-          type: string
-          minItems: 1
-          maxItems: 5
-      movingSensors:
-        type: array
-        items:
-          description: >
-            Kafka input topics corresponds to the moving sensors
-          type: string
-          minItems: 1
-          maxItems: 5
+      items:
+        description: >
+          Kafka input topics corresponds to the moving objects
+        type: string
+        minItems: 1
+        maxItems: 5
   output:
     type: string
     description: >
@@ -143,12 +133,8 @@ properties:
                 type: number
 example:
   inputs:
-    movingObjects:
-      - Miraikan1
-      - Miraikan2
-    movingSensors:
-      - Miraikan3
-      - Miraikan4
+    - Miraikan1
+    - Miraikan2
   output: outputTopic
   queryId: Q1
   parameter:

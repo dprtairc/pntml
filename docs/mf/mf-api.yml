@@ -671,7 +671,7 @@ paths:
           description: There is no result with the specified id.
         default:
           $ref: schemas/DefaultError.yml
-  /processes/continuous:
+  /processes/continuous/aggregate:
     post:
       summary: Creates a new aggregation process to calculate the staying time or the number of moving features and executes it CONTINUOUSLY.
       description: >-
@@ -695,7 +695,7 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/mf/processes/continuous/T0000000001
+                  href: https://dps.aaic.hpcc.jp/mf/processes/continuous/aggregate/T0000000001
                   type: application/geo+json
                 jobs:
                   - name: Continuous
