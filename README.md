@@ -7,4 +7,8 @@ i.e., branch name: pntml-# (# is issue number)
 ```
 3. 当該branchで修正及びcommit 
 4. 修正が完了すると、push及びpull request生成
+
+- Pull-request作成時にdevelopmentに対するissueを一緒に追加してください。([例](https://github.com/dprtairc/pntml/pull/3))
+- [@TaehoonK](https://github.com/TaehoonK)をreviewerに追加していただければ、後で確認してmergeすることにします。
+ 
 5. これ以上使用されなさそうな場合にはbranch削除 
