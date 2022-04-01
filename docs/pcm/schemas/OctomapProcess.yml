@@ -68,6 +68,15 @@ properties:
         minimum: 0
         maximum: 999999
         default: 5
+      imageResolution:
+        type: double
+        description: >
+          2D map creation resolution.
+          Set the image resolution when converting a point cloud to a 2D image during processing.
+          Be sure to divide by 1 to get an integer.
+        minimum: 0.01
+        maximum: 1
+        default: 0.1
       regionGrowing:
         type: object
         description: >
