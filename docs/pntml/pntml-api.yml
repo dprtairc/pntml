@@ -11,14 +11,14 @@ info:
     name: Apache License 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://dps.aaic.hpcc.jp:{port}/pntml
+  - url: https://dps.pntml.net:{port}/pntml
     description: Development server
     variables:
       port:
         enum:
           - xxxx
         default: "443"
-  - url: https://dpsdev.aaic.hpcc.jp:{port}/pntml
+  - url: https://dpsdev.pntml.net:{port}/pntml
     description: Test server
     variables:
       port:
@@ -837,8 +837,8 @@ components:
       type: oauth2
       flows:
         authorizationCode:
-          authorizationUrl: https://dps.aaic.hpcc.jp/pntml/oauth/authorize
-          tokenUrl: https://dps.aaic.hpcc.jp/pntml/oauth/token
+          authorizationUrl: https://dps.pntml.net/pntml/oauth/authorize
+          tokenUrl: https://dps.pntml.net/pntml/oauth/token
           scopes:
             read: Grants read access
             write: Grants write access

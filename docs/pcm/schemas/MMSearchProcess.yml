@@ -12,7 +12,7 @@ properties:
     items:
       type: string
     example: 
-      - https://dps.aaic.hpcc.jp/map3d/mms/Miraikan/meshes
+      - https://dps.pntml.net/map3d/mms/Miraikan/meshes
     minItems: 1
     maxItems: 3
   filter:
