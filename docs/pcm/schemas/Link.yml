@@ -5,7 +5,7 @@ required:
 properties:
   href:
     type: string
-    example: https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan
+    example: https://dps.pntml.net/map3d/pcms/Miraikan
   rel:
     type: string
     examples: 

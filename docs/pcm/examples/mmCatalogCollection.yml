@@ -17,10 +17,10 @@ collections:
         trs:
           - 'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'
     links:
-      - href: 'https://dps.aaic.hpcc.jp/map3d/mms/Miraikan'
+      - href: 'https://dps.pntml.net/map3d/mms/Miraikan'
         rel: 'self'
 links:
-  - href: 'https://dps.aaic.hpcc.jp/map3d/mms/Miraikan'
+  - href: 'https://dps.pntml.net/map3d/mms/Miraikan'
     rel: 'self'
-  - href: 'https://dps.aaic.hpcc.jp/map3d/mms/Miraikan/next/a1f2dn'
+  - href: 'https://dps.pntml.net/map3d/mms/Miraikan/next/a1f2dn'
     rel: 'next'

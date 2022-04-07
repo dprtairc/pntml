@@ -20,8 +20,8 @@ properties:
     items:
       type: string
     example: 
-      - https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan/points
-      - https://dps.aaic.hpcc.jp/map3d/processes/search/17171930-cc56-4dd6-8b0c-7d41700f7ac6
+      - https://dps.pntml.net/map3d/pcms/Miraikan/points
+      - https://dps.pntml.net/map3d/processes/search/17171930-cc56-4dd6-8b0c-7d41700f7ac6
     minItems: 2
     maxItems: 2
   filter:

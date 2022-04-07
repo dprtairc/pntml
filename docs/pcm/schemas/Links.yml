@@ -7,5 +7,5 @@ properties:
     items:
       $ref: Link.yml
       example:
-          href: https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan
+          href: https://dps.pntml.net/map3d/pcms/Miraikan
           rel: self

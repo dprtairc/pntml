@@ -12,14 +12,14 @@ info:
     name: Apache License 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0
 servers:
-  - url: https://dps.aaic.hpcc.jp/map3d
+  - url: https://dps.pntml.net/map3d
     description: Development server
     variables:
       port:
         enum:
           - xxxx
         default: xxxx
-  - url: https://dps.aaic.hpcc.jp/map3d
+  - url: https://dpsdev.pntml.net/map3d
     description: Test server
     variables:
       port:
@@ -66,7 +66,7 @@ paths:
                 $ref: schemas/Links.yml
               example:
                 links:
-                  - href: https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan
+                  - href: https://dps.pntml.net/map3d/pcms/Miraikan
                     rel: self
                     title: Miraikan
         default:
@@ -118,7 +118,7 @@ paths:
                 $ref: schemas/LinkAndJobInfos.yml
               example:
                 links:
-                  - href: https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan/points
+                  - href: https://dps.pntml.net/map3d/pcms/Miraikan/points
                     rel: self
                     type: text/csv
                 jobs:
@@ -225,7 +225,7 @@ paths:
                 $ref: schemas/Links.yml
               example:
                 links:
-                  - href: https://dps.aaic.hpcc.jp/map3d/mms/Miraikan
+                  - href: https://dps.pntml.net/map3d/mms/Miraikan
                     rel: self
                     title: Miraikan
         default:
@@ -277,7 +277,7 @@ paths:
                 $ref: schemas/LinkAndJobInfos.yml
               example:
                 links:
-                  - href: https://dps.aaic.hpcc.jp/map3d/mms/Miraikan/meshes
+                  - href: https://dps.pntml.net/map3d/mms/Miraikan/meshes
                     rel: self
                     type: text/csv
                 jobs:
@@ -380,7 +380,7 @@ paths:
               example:
                 link:
                   title: 943bb0eb-8609-4d28-a147-d54b9816b69e
-                  href: https://dps.aaic.hpcc.jp/map3d/processes/search/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.pntml.net/map3d/processes/search/943bb0eb-8609-4d28-a147-d54b9816b69e
                   type: text/csv
                 jobs:
                   - name: Search
@@ -440,7 +440,7 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/map3d/processes/voxelize/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.pntml.net/map3d/processes/voxelize/943bb0eb-8609-4d28-a147-d54b9816b69e
                   type: text/csv
                 jobs:
                   - name: Voxelize
@@ -500,7 +500,7 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/map3d/processes/ransac/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.pntml.net/map3d/processes/ransac/943bb0eb-8609-4d28-a147-d54b9816b69e
                   type: text/csv
                 jobs:
                   - name: Ransac
@@ -560,7 +560,7 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/map3d/processes/setop/17171930-cc56-4dd6-8b0c-7d41700f7ac6
+                  href: https://dps.pntml.net/map3d/processes/setop/17171930-cc56-4dd6-8b0c-7d41700f7ac6
                   type: text/csv
                 jobs:
                   - name: Setop
@@ -615,7 +615,7 @@ paths:
               example:
                 link:
                   title: 943bb0eb-8609-4d28-a147-d54b9816b69e
-                  href: https://dps.aaic.hpcc.jp/map3d/processes/mesh/search/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.pntml.net/map3d/processes/mesh/search/943bb0eb-8609-4d28-a147-d54b9816b69e
                   type: text/csv
                 jobs:
                   - name: MeshSearch
@@ -677,7 +677,7 @@ paths:
               example:
                 link:
                   title: results
-                  href: https://dps.aaic.hpcc.jp/map3d/processes/octomap/943bb0eb-8609-4d28-a147-d54b9816b69e
+                  href: https://dps.pntml.net/map3d/processes/octomap/943bb0eb-8609-4d28-a147-d54b9816b69e
                   type: text/csv
                 jobs:
                   - name: Octomap

@@ -44,5 +44,5 @@ example:
       trs:
         - 'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'
   links:
-    - href: 'https://dps.aaic.hpcc.jp/map3d/pcms/Miraikan'
+    - href: 'https://dps.pntml.net/map3d/pcms/Miraikan'
       rel: 'self'
