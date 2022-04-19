@@ -708,7 +708,7 @@ paths:
       description: >-
        A user can retrieve only the required data by specifying "filterCondition" according to the input data format.
        This method should be implemented using Apache Kafka.
-      operationId: continuousStayProcess
+      operationId: continuousFilterProcess
       tags:
         - Processes
       requestBody:
@@ -739,7 +739,7 @@ paths:
       description: >-
         Users can only retrieve data that meets each condition on the map by specifying the appropriate map data and reference values for the data on the input stream.
         This method should be implemented using Apache Kafka.
-      operationId: continuousStayProcess
+      operationId: continuousSpeedMapFilterProcess
       tags:
         - Processes
       requestBody:
