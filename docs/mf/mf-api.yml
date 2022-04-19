@@ -708,7 +708,7 @@ paths:
       description: >-
        A user can retrieve only the required data by specifying "filterCondition" according to the input data format.
        This method should be implemented using Apache Kafka.
-      operationId: continuousStayProcess
+      operationId: continuousFilterProcess
       tags:
         - Processes
       requestBody:
@@ -727,6 +727,37 @@ paths:
                 link:
                   title: results
                   href: https://dps.pntml.net/mf/processes/continuous/filter/T0000000001
+                  type: application/geo+json
+                jobs:
+                  - name: Continuous
+                    id: C0000000001
+        default:
+          $ref: schemas/DefaultError.yml
+  /processes/continuous/speedmapfilter:
+    post:
+      summary: Reads the conditions from the map data and filters only the input data that meets the conditions of each coordinate.
+      description: >-
+        Users can only retrieve data that meets each condition on the map by specifying the appropriate map data and reference values for the data on the input stream.
+        This method should be implemented using Apache Kafka.
+      operationId: continuousSpeedMapFilterProcess
+      tags:
+        - Processes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: schemas/ContinuousspeedmapFilterStayProcess.yml
+      responses:
+        202:
+          description: Accepted a continuous stay process.
+          content:
+            application/json:
+              schema:
+                $ref: schemas/LinkAndJobInfos.yml
+              example:
+                link:
+                  title: results
+                  href: https://dps.pntml.net/mf/processes/continuous/speedmapfilter/T0000000001
                   type: application/geo+json
                 jobs:
                   - name: Continuous
