@@ -29,7 +29,7 @@ properties:
         type: string
         enum: 
           - Intersects
-          - Leavers
+          - Leaves
           - Enters
       time:
         $ref: LifeSpan.yml
