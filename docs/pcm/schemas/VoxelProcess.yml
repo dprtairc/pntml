@@ -43,35 +43,11 @@ properties:
         minimum: 2
         maximum: 3
         default: 2
-      distanceMap:
+      ignoreColors:
         type: boolean
         description: >
-          If "true", a map will be created containing the center coordinates of 
-          each cell and the distance from that center point to the nearest point.
-          If the number of cells or the number of points is large, processing will be stopped due to the server load.
-          If "false", a map will be created containing the center coordinates of 
-          each cell and the Bit value indicating the presence or absence of the point cloud in the cell.
-          The bit value is "1" if there is a point cloud in the cell, and "0" otherwise.
+          If false, there is color information in the output file.
+          If true, only coordinate information is available.
         default: false
   output:
-    type: object
-    description: >
-      The output information.
-    properties:
-      type:
-        type: string
-        description: The file in the specified format is compressed into a ZIP file and downloaded.(Only support csv and ply)
-        enum:
-          - csv
-          - ply
-        default: csv
-      crs:
-        type: string
-        description: Convert coordinates with the specified EPSG code and output to a file.
-        example: "http://www.opengis.net/def/crs/EPSG/0/6677"
-        default: 
-      reuse:
-        type: boolean
-        description: >
-          Set true if you want to reuse the output result.
-        default: false
+    $ref: output.yml

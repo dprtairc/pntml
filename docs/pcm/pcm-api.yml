@@ -173,11 +173,7 @@ paths:
       description: >-
         A user can retrieve a sampled data from the PCM with conditions,  
         such as bounding box , time period and the size of sampling.
-        The attributes of the result data are "Coordinate (Longitude,Latitude and Height of WGS84)", 
-        "Intensity", "Red", "Green" and "Blue".
-        If the point cloud to be searched spans multiple EPSG codes, the processing will be stopped.
-        The "Intensity", "Red", "Green" and "Blue" of the result data are 
-        the average values ​​of the point cloud in the voxel.
+        The attributes of the result data are only coordinates (longitude, latitude, height of WGS84).
       operationId: retrievePointClouds
       tags:
         - PointClouds
@@ -416,8 +412,10 @@ paths:
       summary: Creates a new process of voxelization with conditions and executes it ASYNCHRONOUSLY
       description: >-
         A user can calculate voxelized point cloud data with filtering conditions asynchonously.
-        The output file format is CSV only.
-        The coordinate system of the result data is the UTM coordinate system of WGS84. 
+        A parameter allows you to select whether to output color information. 
+        The attributes of the result data with color information are "coordinates (longitude, latitude, height of WGS84 or x, y, z)", "intensity", "red", "green", and "blue". 
+        "Intensity", "Red", "Green", and "Blue" of the result data are the average value of the point cloud in the voxel.
+        The only attribute of the result data without color information is coordinates.
         (EPSG:32601-32660,32701-32760)
         the EPSG code is determined from the coordinate value of the point cloud to be searched.
         If the point cloud to be searched spans multiple EPSG codes, the processing will be stopped.
