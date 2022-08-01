@@ -25,6 +25,8 @@ properties:
     description: indicator about the type of the items in the collection (the default value is 'feature').
     type: string
     default: feature
+  tags:
+    $ref: Tags.yml
 example:
   id: Miraikan
   itemType: feature
@@ -46,3 +48,6 @@ example:
   links:
     - href: 'https://pntml.io/map3d/mms/Miraikan'
       rel: 'self'
+  tags: 
+    - 'お台場'
+    - 'LBJ2019'
