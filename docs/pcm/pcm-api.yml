@@ -876,7 +876,7 @@ components:
       type: object
       properties:
         config:
-          description: JSON File Name. refer to (application/json from Request Body schema)
+          description: JSON File Name. Even when registering multiple point cloud files, there is only one JSON file. When registering point cloud data with different JSON information, it is necessary to register them separately. refer to (application/json from Request Body schema)
           type: binary
           items:
             type: string
@@ -891,7 +891,7 @@ components:
       type: object
       properties:
         config:
-          description: JSON File Name. refer to (application/json from Request Body schema)
+          description: JSON File Name. Even when registering multiple mesh files, there is only one JSON file. When registering mesh data with different JSON information, it is necessary to register them separately.. refer to (application/json from Request Body schema)
           type: binary
           items:
             type: string
