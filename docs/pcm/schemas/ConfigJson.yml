@@ -1,5 +1,5 @@
 type: object
-description: It is the initial value of transform information and GPSTIME of the point cloud map for registration.
+description: JSON File Name. It is the initial value of transform information and GPSTIME of the point cloud map for registration. Even when registering multiple mesh files, there is only one JSON file. When registering mesh data with different JSON information, it is necessary to register them separately.
 properties:
   transformCRS:
     description: >

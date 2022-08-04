@@ -1,0 +1,14 @@
+transformCRS: http://www.opengis.net/def/crs/EPSG/0/3095
+transform: 
+    origin:
+        - 139.778129
+        - 35.618459
+    euler:
+        - 0
+        - 0
+        - 30
+    scale:
+        - 1
+        - 1
+        - 1
+gpsTime: '2017-08-17T08:05:32Z'
