@@ -99,7 +99,7 @@ paths:
     post:
       summary: Uploads a set of point cloud files and Stores them into the PCM
       description: >-
-        A user uploads a set of point cloud files into a specific PCM
+        A user uploads a set of point cloud files into a specific PCM.
         This method is mandatory to be implemented. Pass the transform information and GPSTime initial value as a JSON file to the config parameter. The supported file formats are "las", "csv", "pcd" and "ply".
       operationId: uploadPointClouds
       tags:
@@ -109,6 +109,9 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PointCloudFiles'
+            encoding:
+              config: 
+                contentType: application/json
             example:
               $ref: examples/configJson.yml
       responses:
@@ -267,6 +270,9 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/MeshFiles'
+            encoding:
+              config: 
+                contentType: application/json
             example:
               $ref: examples/configJson.yml
       responses:
