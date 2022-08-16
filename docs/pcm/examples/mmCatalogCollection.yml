@@ -19,6 +19,9 @@ collections:
     links:
       - href: 'https://dps.pntml.net/map3d/mms/Miraikan'
         rel: 'self'
+    tags: 
+      - 'お台場'
+      - 'LBJ2019'
 links:
   - href: 'https://dps.pntml.net/map3d/mms/Miraikan'
     rel: 'self'

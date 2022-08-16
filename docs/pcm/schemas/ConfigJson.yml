@@ -1,0 +1,24 @@
+type: object
+description: |
+  JSON File Name. 
+  It is the initial value of transform information and GPSTIME of the point cloud map for registration. 
+  Even when registering multiple mesh files, there is only one JSON file. When registering mesh data with different JSON information, it is necessary to register them separately.
+
+  ※The explanation below config is the explanation of json contents. and The request samples on the right side are only samples of JSON files.
+properties:
+  transformCRS:
+    description: >
+      It denote a Cartesian coordinate reference systems for the transformation.
+      It is used to transform a Cartesian coordinate system into a WGS84 global geospatial map.
+      If you set the "transform" parameter, you must also set this.
+    type: string
+    example: http://www.opengis.net/def/crs/EPSG/0/3095
+  transform:
+    $ref: Transform.yml
+  gpsTime:
+    description: >
+      This timestamp is used for a point cloud which has no explicit GPS timestamp 
+      of the data creation/acquisition.
+    type: string
+    format: date-time
+    example: '2017-08-17T08:05:32Z'

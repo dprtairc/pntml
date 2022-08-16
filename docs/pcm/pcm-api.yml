@@ -99,8 +99,8 @@ paths:
     post:
       summary: Uploads a set of point cloud files and Stores them into the PCM
       description: >-
-        A user uploads a set of point cloud files into a specific PCM
-        This method is mandatory to be implemented.
+        A user uploads a set of point cloud files into a specific PCM.
+        This method is mandatory to be implemented. Pass the transform information and GPSTime initial value as a JSON file to the config parameter. The supported file formats are "las", "csv", "pcd" and "ply".
       operationId: uploadPointClouds
       tags:
         - PointClouds
@@ -109,6 +109,11 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PointCloudFiles'
+            encoding:
+              config: 
+                contentType: application/json
+            example:
+              $ref: examples/configJson.yml
       responses:
         202:
           description: Accepted storing
@@ -140,7 +145,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: schemas/PCMDescription.yml
+                $ref: schemas/Catalog.yml
         404:
           description: A PCM with the specified name was not found.
     parameters:
@@ -255,7 +260,8 @@ paths:
       summary: Uploads a set of mesh files and Stores them into the MM
       description: >-
         A user uploads a set of messh files into a specific MM
-        This method is mandatory to be implemented.
+        This method is mandatory to be implemented. 
+        Pass the transform information and GPSTime initial value as a JSON file to the config parameter. The only supported file format is "obj".
       operationId: uploadMeshes
       tags:
         - Meshes
@@ -264,6 +270,11 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/MeshFiles'
+            encoding:
+              config: 
+                contentType: application/json
+            example:
+              $ref: examples/configJson.yml
       responses:
         202:
           description: Accepted storing
@@ -295,7 +306,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: schemas/MMDescription.yml
+                $ref: schemas/MMCatalog.yml
         404:
           description: A MM with the specified name was not found.
     parameters:
@@ -868,6 +879,8 @@ components:
     PointCloudFiles:
       type: object
       properties:
+        config:
+          $ref: schemas/ConfigJson.yml
         pointCloudFiles:
           description: File Name List.
           type: array
@@ -877,6 +890,8 @@ components:
     MeshFiles:
       type: object
       properties:
+        config:
+          $ref: schemas/ConfigJson.yml
         meshFiles:
           description: File Name List.
           type: array
