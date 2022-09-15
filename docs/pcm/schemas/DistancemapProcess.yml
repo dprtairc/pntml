@@ -1,0 +1,80 @@
+type: object
+description: This is the description of a Distancemap process as a asynchroized process 
+required:
+  - input
+properties:
+  inputs:
+    type: array
+    description: >
+      A URL list of target datasets for processing. The element MUST be in the format of a URL.
+      Because of the server performance, the maximum size of URLs is 3.
+    items:
+      type: string
+    example: 
+      - https://dps.pntml.net/map3d/pcms/Miraikan/points
+    minItems: 1
+    maxItems: 3
+  filter:
+    type: object
+    description: The spatial and temporal conditions to select data.
+    properties:
+      bbox:
+        $ref: BoundingBox.yml
+      time:
+        $ref: LifeSpan.yml
+      frequency:
+        $ref: Frequency.yml
+  parameter:
+    type: object
+    required:
+      - voxelSize
+    description: Parameters required for distancemap.
+    properties:
+      voxelSize: 
+        type: double
+        description: >
+          The voxel parameter determines the size of sampling points.
+          The unit is meter.
+        minimum: 0.01
+        maximum: 10 
+      dimension:
+        type: integer
+        description: >
+          The dimension for the voxelization.
+        minimum: 2
+        maximum: 3
+        default: 2
+      minDistance:
+        type: double
+        description: >
+          Minimum search distance.
+          Returns the distance result with the minimum search distance even if the distance of the nearest obstacle is less than the minimum search distance.
+          The unit is Meter.
+        minimum: 0
+        maximum: 999999
+        default: 0.5
+      maxDistance:
+        type: double
+        description: >
+          Maximum search distance.
+          Even if there are no obstacles within the maximum search distance, the maximum search distance is returned.
+          The unit is Meter.
+        minimum: 0
+        maximum: 999999
+        default: 5
+  output:
+    type: object
+    description: >
+      The output information.
+    properties:
+      type:
+        type: string
+        description: The file in the specified format is compressed into a ZIP file and downloaded.
+        enum:
+          - csv
+        default: csv
+      crs:
+        type: string
+        description: Convert coordinates with the specified EPSG code and output to a file.
+        example: "http://www.opengis.net/def/crs/EPSG/0/6677"
+        default: 
