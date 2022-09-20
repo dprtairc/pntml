@@ -50,4 +50,32 @@ properties:
           If true, only coordinate information is available.
         default: false
   output:
-    $ref: output.yml
+    type: object
+    description: >
+      The output information.
+    properties:
+      type:
+        type: string
+        description: The file in the specified format is compressed into a ZIP file and downloaded.
+        enum:
+          - las
+          - csv
+          - pcd
+          - ply
+        default: csv
+      crs:
+        type: string
+        description: Convert coordinates with the specified EPSG code and output to a file.
+        example: "http://www.opengis.net/def/crs/EPSG/0/6677"
+        default: 
+      fileNum:
+        type: integer
+        description: Number of output files. The smaller the number of files, the lower the performance.
+        minimum: 1
+        maximum: 200
+        default: 200
+      reuse:
+        type: boolean
+        description: >
+          Set true if you want to reuse the output result.
+        default: false
