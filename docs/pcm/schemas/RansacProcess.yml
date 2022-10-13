@@ -1,19 +1,16 @@
 type: object
 description: This is the description of a Ransac process as a asynchroized process 
 required:
-  - input
+  - inputs
 properties:
   inputs:
     type: array
     description: >
       A URL list of target datasets for processing. The element MUST be in the format of a URL.
-      Because of the server performance, the maximum size of URLs is 3.
     items:
       type: string
     example: 
       - https://dps.pntml.net/map3d/pcms/Miraikan/points
-    minItems: 1
-    maxItems: 3
   filter:
     type: object
     description: The spatial and temporal conditions to select data.

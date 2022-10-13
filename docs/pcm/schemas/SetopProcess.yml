@@ -2,7 +2,7 @@ type: object
 description: This is the description of a SetOperator process as a asynchroized process 
 required:
   - type
-  - input
+  - inputs
 properties:
   type:
     type: string
