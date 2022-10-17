@@ -1,19 +1,16 @@
 type: object
 description: This is the description of a Distancemap process as a asynchroized process 
 required:
-  - input
+  - inputs
 properties:
   inputs:
     type: array
     description: >
       A URL list of target datasets for processing. The element MUST be in the format of a URL.
-      Because of the server performance, the maximum size of URLs is 3.
     items:
       type: string
     example: 
       - https://dps.pntml.net/map3d/pcms/Miraikan/points
-    minItems: 1
-    maxItems: 3
   filter:
     type: object
     description: The spatial and temporal conditions to select data.
@@ -73,6 +70,22 @@ properties:
         enum:
           - csv
         default: csv
+      fileNum:
+        type: integer
+        description: Number of output files. The smaller the number of files, the lower the performance.
+        minimum: 1
+        maximum: 200
+        default: 200
+      sort:
+        type: array
+        items:
+          type: object
+        description: |
+          Sort the output results. Be sure to specify key and order. Multiple items possible.<br>
+          format:[{"key":"item name","order":"asc or desc"}]<br>
+          key : Specify items to sort.(Not valid when specifying a nonexistent item) <br>
+          order : Only asc and desc can be specified.
+        example: [{"key":"x","order":"asc"},{"key":"y","order":"desc"},{"key":"z","order":"asc"}]
       crs:
         type: string
         description: Convert coordinates with the specified EPSG code and output to a file.
