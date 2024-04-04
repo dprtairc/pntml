@@ -27,9 +27,49 @@ properties:
     properties:
       size: 
         type: double
-        description: >
+        description: |
           The voxel parameter determines the size of sampling points.
           The unit is meter.
+
+          The Voxel size is selected from one of the lengths in the following table.
+          The largest length of smaller values than the specified value is selected.
+
+          |XY resolution|Z resolution|length(m)|
+          |:------------|:-----------|--------:|
+          | 0           | -          |7674457.948|
+          | 1           | -          |3837228.974|
+          | 2           | -          |1918614.487|
+          | 3           | -          |959307.2435|
+          | 4           | -          |479653.6218|
+          | 5           | -          |239826.8109|
+          | 6           | -          |119913.4054|
+          | 7           | -          |59956.70272|
+          | 8           | 0          |29978.35136|
+          | 9           | 1          |14989.17568|
+          |10           | 2          |7494.587840|
+          |11           | 3          |3747.293920|
+          |12           | 4          |1873.646960|
+          |13           | 5          |936.8234800|
+          |14           | 6          |468.4117400|
+          |15           | 7          |234.2058700|
+          |16           | 8          |117.1029350|
+          |17           | 9          |58.55146750|
+          |18           |10          |29.27573375|
+          |19           |11          |14.63786688|
+          |20           |12          |7.318933438|
+          |21           |13          |3.659466719|
+          |22           |14          |1.829733359|
+          |23           |15          |0.914866680|
+          |24           |16          |0.457433340|
+          |25           |17          |0.228716670|
+          |26           |18          |0.114358335|
+          |27           |19          |0.057179167|
+          |28           |20          |0.028589584|
+          |29           |21          |0.014294792|
+          |30           |22          |0.007147396|
+          |31           |23          |0.003573698|
+          |32           |24          |0.001786849|
+
         minimum: 0.01
         maximum: 10
         default: 0.2
@@ -53,7 +93,23 @@ properties:
     properties:
       type:
         type: string
-        description: The file in the specified format is compressed into a ZIP file and downloaded.
+        description: |
+          The file in the specified format is compressed into a ZIP file and downloaded.
+
+          The header in pcd format file is as follows.
+          ```
+          # .PCD v0.7 - Point Cloud Data file format
+          VERSION 0.7
+          FIELDS x y z gpsTime intensity rgba
+          SIZE 4 4 4 4 4 4
+          TYPE F F F I I U
+          COUNT 1 1 1 1 1 1
+          WIDTH ??????
+          HEIGHT 1
+          VIEWPOINT 0 0 0 1 0 0 0
+          POINTS ?????
+          DATA binary
+          ```
         enum:
           - las
           - csv

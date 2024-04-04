@@ -367,7 +367,7 @@ paths:
     post:
       summary: Creates a new search process with conditions and executes it ASYNCHRONOUSLY
       description: >-
-        A user can search point cloud data with more complex conditions asynchonously.
+        A user can search point cloud data with more complex conditions asynchronously.
         This method is mandatory to be implemented.
       operationId: searchProcess
       tags:

@@ -1,0 +1,28 @@
+{
+  "name": "pntml",
+  "version": "1.0.0",
+  "description": "Web API for PntML",
+  "main": "public/index.md",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "bundle_mf": "./node_modules/.bin/redoc-cli bundle -o ./target/html/mf-api.html ./docs/mf/mf-api.yml",
+    "bundle_pcm": "./node_modules/.bin/redoc-cli bundle -o ./target/html/pcm-api.html ./docs/pcm/pcm-api.yml",
+    "bundle_common": "./node_modules/.bin/redoc-cli bundle -o ./target/html/pntml-api.html ./docs/pntml-open/pntml-api.yml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dprtairc/pntml.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dprtairc/pntml/issues"
+  },
+  "homepage": "https://github.com/dprtairc/pntml#readme",
+  "devDependencies": {
+    "redoc": "^2.1.3",
+    "redoc-cli": "^0.13.21"
+  }
+}

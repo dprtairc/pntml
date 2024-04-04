@@ -21,7 +21,23 @@ properties:
     properties:
       type:
         type: string
-        description: The file in the specified format is compressed into a ZIP file and downloaded.
+        description: |
+          The file in the specified format is compressed into a ZIP file and downloaded.
+
+          The header in pcd format file is as follows.
+          ```
+          # .PCD v0.7 - Point Cloud Data file format
+          VERSION 0.7
+          FIELDS x y z gpsTime intensity rgba
+          SIZE 4 4 4 4 4 4
+          TYPE F F F I I U
+          COUNT 1 1 1 1 1 1
+          WIDTH ??????
+          HEIGHT 1
+          VIEWPOINT 0 0 0 1 0 0 0
+          POINTS ?????
+          DATA binary
+          ```
         enum:
           - las
           - csv
