@@ -12,3 +12,24 @@ i.e., branch name: pntml-# (# is issue number)
 - [@TaehoonK](https://github.com/TaehoonK)をreviewerに追加していただければ、後で確認してmergeすることにします。
  
 5. これ以上使用されなさそうな場合にはbranch削除 
+
+# 開発環境構築
+
+`package.json` と `package-lock.json` からパッケージをインストール
+
+```npm ci```
+
+`redoc-cli` を使ってHTMLを生成して，生成されたHTMLを確認
+```
+./node_modules/.bin/redoc-cli bundle -o ./target/html/mf-api.html ./docs/mf/mf-api.yml
+./node_modules/.bin/redoc-cli bundle -o ./target/html/pcm-api.html ./docs/pcm/pcm-api.yml
+./node_modules/.bin/redoc-cli bundle -o ./target/html/pntml-api.html ./docs/pntml-open/pntml-api.yml
+```
+
+`redoc-cli` の実行は以下でも実行可能
+```
+npm run bundle_mf
+npm run bundle_pcm
+npm run bundle_common
+```
+
