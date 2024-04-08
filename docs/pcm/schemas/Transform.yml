@@ -1,7 +1,7 @@
 description: >
   It transforms a source coordinate into a target coordinate by using quaternion 
   of Euler angles and scale values.
-  If you set this, you must also set "transformCRS" parameter.
+  If the "origin" parameter is for a Cartesian coordinate system, the "transformCRS" parameter should also be set.
 type: object
 properties:
   origin:
