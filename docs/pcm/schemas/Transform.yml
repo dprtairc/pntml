@@ -22,7 +22,7 @@ properties:
 
       For example: 
       If the following JSON is given, WGS84-based origin (139.7780996958115, 35.61846131695731, 0) is transformed to (-5003.445813743943, -42328.165818379086, 0) in JGD2011 / Japan Plane Rectangular CS IX (EPSG:6677).
-      This transformed origin coordicates are used as the origin of the posted point cloud.
+      This transformed origin coordinates are used as the origin of the posted point cloud.
       ```JSON
       {
         "transformCRS": "http://www.opengis.net/def/crs/EPSG/0/6677",
@@ -38,8 +38,8 @@ properties:
       * <http://www.opengis.net/def/crs/EPSG/0/32601> to <http://www.opengis.net/def/crs/EPSG/0/32660>
       * <http://www.opengis.net/def/crs/EPSG/0/32701> to <http://www.opengis.net/def/crs/EPSG/0/32760>
       
-      
-      For example: If the value of `origin` is located in Tokyo, the value of `transformCRS` becomes <http://www.opengis.net/def/crs/EPSG/0/32654>, because EPSG:32654 covers Tokyo.
+      For example:
+      If the value of `origin` is located in Tokyo, the value of `transformCRS` becomes <http://www.opengis.net/def/crs/EPSG/0/32654>, because EPSG:32654 covers Tokyo.
     type: array
     items:
       type: number
