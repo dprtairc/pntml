@@ -1,11 +1,45 @@
-description: >
-  It transforms a source coordinate into a target coordinate by using quaternion 
-  of Euler angles and scale values.
-  If the "origin" parameter is for a Cartesian coordinate system, the "transformCRS" parameter should also be set.
+description: |
+  PntML uses the information to transform each point in the posted point cloud.
+
+  Each point is transformed based on the information of `transform`.
+  The transformed points are based on the coordinate system specified in `transformCRS`.
+
+  The value of 'origin' is the origin point of the posted point cloud based on WGS84.
+  Each point is transformed using by using quaternion of Euler angles and scale values.
 type: object
 properties:
   origin:
-    description: The orgin coordinate [longitue, latitute, (altitude)] based on WGS84.
+    description: |
+      The origin coordinates of the posted point cloud based on WGS84.
+
+      The default value is [0,0,0].
+      The unit of each value is Decimal Degree (DD) of WGS84, but not Degrees Minutes Seconds (DMS).
+
+      The format is [longitude, latitude] or [longitude, latitude, altitude].    
+      Note that the order is not latitude and longitude.
+
+      Before transforming the coordinates of each point, the origin point is transformed  from WGS84 to the coordinate system specified by `transformCRS`.
+
+      For example: 
+      If the following JSON is given, WGS84-based origin (139.7780996958115, 35.61846131695731, 0) is transformed to (-5003.445813743943, -42328.165818379086, 0) in JGD2011 / Japan Plane Rectangular CS IX (EPSG:6677).
+      This transformed origin coordicates are used as the origin of the posted point cloud.
+      ```JSON
+      {
+        "transformCRS": "http://www.opengis.net/def/crs/EPSG/0/6677",
+        "transform": {
+          "origin": [139.7780996958115, 35.61846131695731, 0],
+          "euler": [0,0,0],
+          "scale": [1,1,1]
+        }
+      }
+      ```
+
+      If `transformCRS` is not specified, `transformCRS` is determined based on the value of `origin` from the following range of codes. Te coordinate system covering the location specified in `origin` is selected as the value of `transformCRS` from the following CRSs.
+      * <http://www.opengis.net/def/crs/EPSG/0/32601> to <http://www.opengis.net/def/crs/EPSG/0/32660>
+      * <http://www.opengis.net/def/crs/EPSG/0/32701> to <http://www.opengis.net/def/crs/EPSG/0/32760>
+      
+      
+      For example: If the value of `origin` is located in Tokyo, the value of `transformCRS` becomes <http://www.opengis.net/def/crs/EPSG/0/32654>, because EPSG:32654 covers Tokyo.
     type: array
     items:
       type: number
@@ -18,6 +52,7 @@ properties:
     description: >
       Euler angles to quaternion form, defining the angle around the X-axis (roll) as ψ,
       the Y-axis (pitch) as θ, and the Z-axis (yaw) as ϕ, by degrees.
+      The default is [0,0,0].
     type: array
     items:
       type: number
@@ -30,6 +65,7 @@ properties:
   scale:
     description: >
       The scale value of numbers along the X, Y, and Z-axis in order as three scale factors.
+      The default is [1,1,1].
     type: array
     items:
       type: number

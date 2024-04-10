@@ -7,11 +7,23 @@ description: |
   ※The explanation below config is the explanation of json contents. and The request samples on the right side are only samples of JSON files.
 properties:
   transformCRS:
-    description: >
-      It denote a Cartesian coordinate reference systems for the transformation.
-      It is used to transform a Cartesian coordinate system into a WGS84 global geospatial map.
+    description: |
+      Coordinate system of the posted point cloud file.
+
+      The format is a URI indicating the EPSG code from `opengis.net`.
+      That is, a string prefixed with `https://www.opengis.net/def/crs/EPSG/`.
+
+      For example:
+      * WGS84: <https://www.opengis.net/def/crs/EPSG/0/4326>
+      * JGD2011 / Japan Plane Rectangular CS IX: <https://www.opengis.net/def/crs/EPSG/0/6677>
+
+      The default value is determined from one of the following ranges, based on the value of `origin` in `transform`.
+      * <http://www.opengis.net/def/crs/EPSG/0/32601> to <http://www.opengis.net/def/crs/EPSG/0/32660>
+      * <http://www.opengis.net/def/crs/EPSG/0/32701> to <http://www.opengis.net/def/crs/EPSG/0/32760>
+
+      If transform is specified, the coordinate system in transformCRS means the coordinates of each point in the point cloud file which is transformed based on origin, euler and scale in transform.
     type: string
-    example: http://www.opengis.net/def/crs/EPSG/0/3095
+    example: http://www.opengis.net/def/crs/EPSG/0/4326
   transform:
     $ref: Transform.yml
   gpsTime:
