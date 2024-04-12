@@ -12,7 +12,11 @@ properties:
     description: |
       The origin coordinates of the posted point cloud based on WGS84.
 
-      The default value is [0,0,0].
+      The default is nothing.
+      If `origin` is not given, even `euler` and/or `scale` is given, 
+      then the coordinate transformation of the posted pointcloud does NOT performed 
+      and the pointcloud is stored as it is as the coordinates based on the specified CRS in `transformCRS`.
+
       The unit of each value is Decimal Degree (DD) of WGS84, but not Degrees Minutes Seconds (DMS).
 
       The format is [longitude, latitude] or [longitude, latitude, altitude].    
@@ -21,7 +25,7 @@ properties:
       Before transforming the coordinates of each point, the origin point is transformed  from WGS84 to the coordinate system specified by `transformCRS`.
 
       For example: 
-      If the following JSON is given, WGS84-based origin (139.7780996958115, 35.61846131695731, 0) is transformed to (-5003.445813743943, -42328.165818379086, 0) in JGD2011 / Japan Plane Rectangular CS IX (EPSG:6677).
+      If the following JSON is given, WGS84-based origin (139.7780996958115, 35.61846131695731, 0) is transformed to (-5003.445813743943, -42328.165818379086, 0) in EPSG:6677(JGD2011 / Japan Plane Rectangular CS IX).
       This transformed origin coordinates are used as the origin of the posted point cloud.
       ```JSON
       {
