@@ -120,7 +120,9 @@ properties:
         type: string
         description: Convert coordinates with the specified EPSG code and output to a file.
         example: "http://www.opengis.net/def/crs/EPSG/0/6677"
-        default: 
+        default:
+      xAxis:
+        $ref: X_AxisOutput.yml
       fileNum:
         type: integer
         description: Number of output files. The smaller the number of files, the lower the performance.

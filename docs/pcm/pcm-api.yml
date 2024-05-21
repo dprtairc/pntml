@@ -101,10 +101,6 @@ paths:
       description: |
         A user uploads a set of point cloud files into a specific PCM.
         This method is mandatory to be implemented. Pass the transform information and GPSTime initial value as a JSON file to the config parameter. The supported file formats are "las", "csv", "pcd" and "ply".
-
-        Note that, in PntML, the east-west direction is defined as the x-axis and the north-south direction as the y-axis.
-        Therefore, as the order of latlon, (longitude, latitude) is used instead of (latitude, longitude) in PntML.
-        Coordinate systems such as Japan Plane Rectangular CS IX also define the north-south direction as the X-axis and the east-west direction as the Y-axis, but the direction of axis is different from these coordinate systems.
       operationId: uploadPointClouds
       tags:
         - PointClouds

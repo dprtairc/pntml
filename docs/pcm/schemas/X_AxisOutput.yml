@@ -1,0 +1,9 @@
+description: |
+  The x-axis direction of the output point cloud file.
+      
+  If the x-axis direction is from west to east, set "we"; if the x-axis direction is from south to north, set "sn".
+type: string
+default: we
+enum:
+  - we
+  - sn
